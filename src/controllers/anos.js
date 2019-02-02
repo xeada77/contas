@@ -59,9 +59,14 @@ exports.postNewAno = (req, res, next) => {
                 ano: parseInt(req.body.ano),
                 saldoinicial: parseFloat(req.body.saldoinicial)
             });
-            await newAno.save();
-            req.flash('success_msg', 'El año ha sido creado satisfactoriamente.');
-            res.redirect("/anos");
+            try {
+                await newAno.save();
+                req.flash('success_msg', 'El año ha sido creado satisfactoriamente.');
+                return res.redirect("/anos");
+            } catch (errs) {
+                console.log(errs);
+                return res.send('Algo Falló');
+            }
         })
         .catch(async errors_msg => {
             console.log(errors_msg);
