@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
 
-mongoose.connect('mongodb://localhost/contas-app', {
+mongoose.connect('mongodb://127.0.0.1:27017/contas-app', {
     useCreateIndex: true,
-    //useNewUrlParser: true,
+    useNewUrlParser: true,
     useFindAndModify: false
 }).then(() => {
     console.log('Base de datos conectada');
