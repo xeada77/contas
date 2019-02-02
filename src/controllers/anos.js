@@ -57,7 +57,8 @@ exports.postNewAno = (req, res, next) => {
         .then(async resp => {
             const newAno = new Ano({
                 ano: parseInt(req.body.ano),
-                saldoinicial: parseFloat(req.body.saldoinicial)
+                //saldoinicial: parseFloat(req.body.saldoinicial)
+                saldoinicial: req.body.saldoinicial
             });
             try {
                 await newAno.save();
