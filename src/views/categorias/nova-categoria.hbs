@@ -1,0 +1,31 @@
+<div class="card col-md-7 mx-auto p-2">
+    <div class="card-body">
+        {{#if categoria}}
+        <h3 class="card-title text-center">Editar Categoria</h3>
+        {{else}}
+        <h3 class="card-title text-center">Añadir Categoria</h3>
+        {{/if}}
+
+        <form action="/categorias/add" method="post">
+            <div class="form-group">
+                <input type="text" name="nombre" id="inputnombrecategoria" class="form-control" placeholder="Nombre Categoria">
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+
+                    <input type="text" name="codigo" id="inputcodigocategoria" class="form-control" placeholder="Codigo">
+                    <div class="input-group-append">
+                        <span class="input-group-text">X.0.0</span>
+                    </div>
+                </div>
+            </div>
+            {{#if categoria}}
+            <button class="btn btn-primary btn-block" id="editarCategoria" type="button" data-id="{{categoria.codigo}}">Editar</button>
+            <button class="btn btn-danger btn-block" id="eliminarCategoria" type="button" data-id="{{categoria.codigo}}">Eliminar</button>
+            {{else}}
+            <button class="btn btn-primary btn-block" type="submit" id="anadirCategoria">Añadir Categoria</button>
+            {{/if}}
+
+        </form>
+    </div>
+</div>

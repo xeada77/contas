@@ -1,0 +1,19 @@
+<div class="row justify-content-around">
+    {{#each listaAnos}}
+    <div class="card text-center col-md-3 m-2">
+        <div class="card-body">
+            <h3 class="card-title">Año {{ano}}</h3>
+            <a href="/movimientos/{{ano}}" class="btn btn-primary btn-block btn-sm">Acceder</a>
+            <a href="/anos/edit/{{ano}}" class="btn btn-danger btn-block btn-sm">Editar</a>
+        </div>
+    </div>
+    {{/each}}
+
+
+    <div class="card text-center col-md-3 m-2">
+        <div class="card-body">
+            <h3 class="card-title">Añadir Año</h3>
+            <a href="/anos/new" class=""><i class="fas fa-3x fa-plus-circle"></i></a>
+        </div>
+    </div>
+</div>

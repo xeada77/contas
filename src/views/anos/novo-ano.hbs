@@ -1,0 +1,62 @@
+<div class="card col-md-7 mx-auto p-2">
+    <div class="card-body">
+        {{#if editAno}}
+        <h3 class="card-title text-center">Editar Año</h3>
+        {{else}}
+        <h3 class="card-title text-center">Añadir Año</h3>
+        {{/if}}
+
+        <form action="/anos/new" method="post">
+            <div class="form-group">
+                <label for="ano">Año</label>
+                <select name="ano" id="seleccionAno" class="form-control custom-select {{#if errors_msg }}{{#unless validation.ano}}is-invalid{{/unless}}{{/if}}" required>
+                    {{#if ano}}
+                    <option value="{{ano.ano}}" selected>{{ano.ano}}</option>
+                    {{else}}
+                    <option selected disabled>Seleccione el año...</option>
+                    {{/if}}
+                    {{#each opcionesAnos}}
+                    <option value="{{number}}">{{number}}</option>
+                    {{/each}}
+                </select>
+                {{#if errors_msg }}{{#unless validation.ano}}
+                    <div class="invalid-feedback">
+                        El año ya existe o es invalido.
+                </div>{{/unless}}{{/if}}
+            </div>
+            <div class="form-group">
+                <label for="saldoinicial">Saldo Inicial</label>
+                <div class="input-group">
+                    
+                    {{#if ano}}
+                    <input type="text" class="form-control {{#unless validation.saldoinicial}}is-invalid{{/unless}}"
+                        name="saldoinicial" id="inputSaldo" value="{{ano.saldoinicial}}" placeholder="Saldo Inicial">
+
+                    {{else}}
+                    <input type="text" class="form-control" name="saldoinicial" id="inputSaldo" placeholder="Saldo Inicial">
+
+                    {{/if}}
+                    <div class="input-group-append">
+                        <span class="input-group-text">€</span>
+                        <span class="input-group-text">0.00</span>
+                    </div>
+                    {{#unless validation.saldoinicial}}
+                    <div class="invalid-feedback">
+                        Formato de saldo incorrecto.
+                    </div>{{/unless}}
+                </div>
+            </div>
+            {{#if ano}}
+            {{#if editAno}}
+            <button class="btn btn-primary btn-block" id="editarAno" type="button" data-id="{{ano._id}}">Editar</button>
+            <button class="btn btn-danger btn-block" id="eliminarAno" type="button" data-id="{{ano.ano}}">Eliminar</button>
+            {{else}}
+            <button class="btn btn-primary btn-block" type="submit" id="anadirAno">Añadir</button>
+            {{/if}}
+            {{else}}
+            <button class="btn btn-primary btn-block" type="submit" id="anadirAno">Añadir</button>
+            {{/if}}
+
+        </form>
+    </div>
+</div>
