@@ -16,7 +16,7 @@ require('./database');
 
 
 // Settings
-app.set('port', process.env.PORT || 3002);
+app.set('port', process.env.PORT || 3003);
 app.set('views', path.join(__dirname, 'views'));
 app.engine('.hbs', exphbs({
     defaultLayout: 'main',
