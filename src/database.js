@@ -5,8 +5,8 @@ const uri =
 
 mongoose
     .connect(
-        // "mongodb://localhost:27017/contas-app",
-        uri,
+        "mongodb://localhost:27017/contas-app",
+        //uri,
         {
             useCreateIndex: true,
             useNewUrlParser: true,

@@ -22,15 +22,17 @@ router.post('/movimientos/:anoid/addmovimiento', async (req, res) => {
     const anoObj = await Ano.findById( anoId );
     if (anoObj) {
         const newMovimiento = new Movimiento({ fecha, concepto, cantidad, ano: anoId, categoria });
-        console.log(newMovimiento);
-        await newMovimiento.save();
+        const movimiento = await newMovimiento.save();
+        const datos = await Movimiento.findById(movimiento.id).populate('categoria');
+        const dt = { codigoCategoria: datos.categoria.codigo, cantidad: datos.cantidad.toString(), concepto: datos.concepto };
+        return res.send(dt);
         
     }
     
     
 
 
-    res.send('ok');
+
 });
 
 module.exports = router;

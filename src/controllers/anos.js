@@ -57,16 +57,19 @@ exports.postNewAno = (req, res, next) => {
         .then(async resp => {
             const newAno = new Ano({
                 ano: parseInt(req.body.ano),
-                //saldoinicial: parseFloat(req.body.saldoinicial)
-                saldoinicial: req.body.saldoinicial
+                saldoinicial: parseFloat(req.body.saldoinicial)
+                //saldoinicial: req.body.saldoinicial
             });
             try {
                 await newAno.save();
-                req.flash('success_msg', 'El año ha sido creado satisfactoriamente.');
+                req.flash(
+                    "success_msg",
+                    "El año ha sido creado satisfactoriamente."
+                );
                 return res.redirect("/anos");
             } catch (errs) {
                 console.log(errs);
-                return res.send('Algo Falló');
+                return res.send("Algo Falló");
             }
         })
         .catch(async errors_msg => {
@@ -75,11 +78,11 @@ exports.postNewAno = (req, res, next) => {
                 ano: req.body.ano,
                 saldoinicial: req.body.saldoinicial
             };
-            const validation = { ano: true, saldoinicial: false };
+            const validation = { ano: true, saldoinicial: true };
             errors_msg.forEach(validationErr => {
                 validation[validationErr.param] = false;
             });
-            
+
             res.render("anos/novo-ano", {
                 ano,
                 opcionesAnos: helpers.opcionesAnos(),
@@ -92,12 +95,15 @@ exports.postNewAno = (req, res, next) => {
 };
 
 exports.putEditAno = async (req, res, next) => {
-    const getAno = await Ano.findById(req.params.anoid);
+    const getAno = await Ano.findById(req.body.anoId);
     const putAno = await Ano.findOne({ ano: req.body.ano });
 
     if (putAno) {
         if (getAno.id !== putAno.id) {
-            req.check("ano", "El año ya existe en la base de datos").existeAno();
+            req.check(
+                "ano",
+                "El año ya existe en la base de datos"
+            ).existeAno();
         }
     }
 
@@ -107,26 +113,36 @@ exports.putEditAno = async (req, res, next) => {
     ).matches(/^[0-9]+(\.[0-9]{1,2})?$/);
 
     req.asyncValidationErrors()
-    .then(() => {
-        Ano.findByIdAndUpdate(req.params.anoid, {
-            ano: req.body.ano,
-            saldoinicial: req.body.saldoinicial
-        })
-            .then(anoActualizado => {
-                req.flash('success_msg', 'El año ha sido editado satisfactoriamente.');
-                return res.redirect("/anos");
+        .then(() => {
+            Ano.findByIdAndUpdate(req.body.anoId, {
+                ano: req.body.ano,
+                saldoinicial: req.body.saldoinicial
             })
-            .catch(err => {
-                console.log(err);
+                .then(anoActualizado => {
+                    req.flash(
+                        "success_msg",
+                        "El año ha sido editado satisfactoriamente."
+                    );
+                    return res.redirect("/anos");
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        })
+        .catch(async errors => {
+            console.log(errors);
+            //const ano = await Ano.findById(req.body.anoId);
+            const validation = { ano: true, saldoinicial: true };
+            errors.forEach(validationErr => {
+                validation[validationErr.param] = false;
             });
-    })
-    .catch(async errors => {
-        const ano = await Ano.findById(req.params.anoid);
-        return res.render("anos/edit-ano", {
-            ano,
-            opcionesAnos: helpers.opcionesAnos(),
-            listaAnos: await helpers.listaAnos(),
-            errors
+            return res.render("anos/edit-ano", {
+                ano : {ano: req.body.ano, saldoinicial: req.body.saldoinicial, id: req.body.anoId},
+                opcionesAnos: helpers.opcionesAnos(),
+                listaAnos: await helpers.listaAnos(),
+                errors_msg: errors,
+                validation,
+                getAno: getAno
+            });
         });
-    });
 };

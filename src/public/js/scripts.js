@@ -26,12 +26,12 @@ $("#guardar-movimiento").click(function(e) {
 
     // console.log(data);
 
-    $.post("/movimientos/" + data.ano + "/addmovimiento", data).done(dt => {
-        // console.log(dt);
+    $.post("/movimientos/" + data.ano + "/addmovimiento", data).done((dt) => {
         const html = `<tr>
         <td>${fechaTemp}</td>
-        <td>${data.concepto}</td>
-        <td>${data.cantidad}</td>
+        <td>${dt.concepto}</td>
+        <td>${dt.cantidad}€</td>
+        <td>${dt.codigoCategoria}</td>
         </tr>`;
 
         limpiarFormulario();

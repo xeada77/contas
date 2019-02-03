@@ -21,12 +21,12 @@ router.post("/anos/new", anosController.postNewAno);
 
 // Editar el año
 
-router.put("/anos/edit/:anoid", anosController.putEditAno);
+router.put("/anos/edit/", anosController.putEditAno);
 
-router.post("/anos/delete/:anoid", async (req, res) => {
+router.post("/anos/delete/", async (req, res) => {
     console.log(req.body);
     await Ano.findOneAndDelete(
-        { ano: req.params.anoid },
+        { ano: req.body.anoId },
         async (err, respuesta) => {
             if (err) {
                 console.log(err);
