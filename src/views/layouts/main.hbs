@@ -15,18 +15,34 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/sidebar.css">
     <title>Contas</title>
 </head>
 
 <body>
-    {{>navegacion}}
-    
-    <main class="container-fluid p-4">
+    <div class="wrapper">
+        {{>navegacion}}
+        <main class="w-75 mx-auto">
+            {{>errors}}
+            <div id="content">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <div class="container-fluid">
+                        <button type="button" id="sidebarCollapse" class="btn btn-info">
+                            <i class="fas fa-align-left"></i>
+                            <span id="menuBtnText">Cerrar Menu</span>
+                        </button>
 
-        {{>errors}}
+                    </div>
+                </nav>
+            </div>
+            .<div class="container-fluid">
+                {{{body}}}
+            </div>
+        </main>
+    </div>
 
-        {{{body}}}
-    </main>
+
+
 
     <!-- BootStrap Scripts -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

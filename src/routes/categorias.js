@@ -1,7 +1,5 @@
 const router = require("express").Router();
 
-const Ano = require("../models/Ano");
-const Movimiento = require("../models/Movimiento");
 const Categoria = require("../models/Categoria");
 
 const helpers = require("./helpers/helpers");

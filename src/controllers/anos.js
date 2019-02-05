@@ -137,7 +137,11 @@ exports.putEditAno = async (req, res, next) => {
                 validation[validationErr.param] = false;
             });
             return res.render("anos/edit-ano", {
-                ano : {ano: req.body.ano, saldoinicial: req.body.saldoinicial, id: req.body.anoId},
+                ano: {
+                    ano: req.body.ano,
+                    saldoinicial: req.body.saldoinicial,
+                    id: req.body.anoId
+                },
                 opcionesAnos: helpers.opcionesAnos(),
                 listaAnos: await helpers.listaAnos(),
                 errors_msg: errors,
@@ -145,4 +149,15 @@ exports.putEditAno = async (req, res, next) => {
                 getAno: getAno
             });
         });
+};
+
+exports.postDeleteAno = async (req, res, next) => {
+    try {
+        const ano = await Ano.findByIdAndRemove(req.body.anoId);
+        //await Movimiento.deleteMany({ ano: ano._id });
+        return res.redirect("/anos");
+    } catch (error) {
+        console.log(error);
+        return res.redirect("/anos");
+    }
 };

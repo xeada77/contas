@@ -1,4 +1,6 @@
-$(function() {
+var cerrado = true;
+
+$(function () {
     $("#seleccionfecha").datetimepicker({
         format: "L",
         format: "DD/MM/YYYY"
@@ -6,27 +8,42 @@ $(function() {
     $("#seleccionfecha").datetimepicker("locale", "es");
 });
 
+$(document).ready(function() {
+    $("#sidebarCollapse").on("click", function() {
+        
+        $("#sidebar").toggleClass("active");
+        if (cerrado) {
+            this.children[1].innerText = "Abrir Menu";
+            cerrado = false;
+        } else {
+            this.children[1].innerText = "Cerrar Menu";
+            cerrado = true;
+        }
+    });
+});
+
 $("#guardar-movimiento").click(function(e) {
     e.preventDefault();
     //console.log("click");
 
     const fechaTemp = $("#fecha").val();
+    console.log(fechaTemp);
     const data = {};
 
     data.fecha = new Date(
         fechaTemp.substring(6),
-        fechaTemp.substring(3, 5),
+        parseInt(fechaTemp.substring(3, 5)) - 1,
         fechaTemp.substring(0, 2)
     );
     data.concepto = $("#concepto").val();
     data.cantidad = parseFloat($("#cantidad").val());
-    data.categoria = $("select option:selected").data("id");
+    data.categoriaId = $("select option:selected").data("id");
     data.anoId = $(this).data("id");
     data.ano = $(this).data("ano");
 
     // console.log(data);
 
-    $.post("/movimientos/" + data.ano + "/addmovimiento", data).done((dt) => {
+    $.post("/movimientos/" + data.ano + "/addmovimiento", data).done(dt => {
         const html = `<tr>
         <td>${fechaTemp}</td>
         <td>${dt.concepto}</td>
@@ -68,7 +85,7 @@ const limpiarFormulario = () => {
     })
 });*/
 
-$("#eliminarAno").click(function(e) {
+/*$("#eliminarAno").click(function(e) {
     // console.log('click');
     e.preventDefault();
 
@@ -78,4 +95,4 @@ $("#eliminarAno").click(function(e) {
         // console.log('done');
         window.location.href = "/anos";
     });
-});
+});*/
