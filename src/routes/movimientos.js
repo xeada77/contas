@@ -2,14 +2,20 @@ const router = require("express").Router();
 
 const movimientosController = require("../controllers/movimientos");
 
-
+router.get("/movimientos/:anoId", movimientosController.getMovimientos);
 
 router.get(
-    "/movimientos/:anoid",
-    movimientosController.getMovimientos);
+    "/movimientos/:anoId/ingresos",
+    movimientosController.getMovimientosIngresos
+);
+
+router.get(
+    "/movimientos/:anoId/gastos",
+    movimientosController.getMovimientosGastos
+);
 
 router.post(
-    "/movimientos/:anoid/addmovimiento",
+    "/movimientos/:anoId/addmovimiento",
     movimientosController.postAddMovimiento
 );
 

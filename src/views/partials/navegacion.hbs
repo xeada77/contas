@@ -54,13 +54,13 @@
 
     <ul class="list-unstyled components">
         <p>Dummy Heading</p>
-        <li class="active">
+        <li >
             <a href="#categoriasSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Categorias</a>
-            <ul class="collapse list-unstyled" id="categoriasSubmenu">
+            <ul class="collapse list-unstyled {{seleccionaShow '/categorias' path}}" id="categoriasSubmenu">
                 <li>
                     <a href="/categorias">Todas las Categorias</a>
                 </li>
-                <li>
+                <li >
                     <a href="/categorias/add">Añadir Categoria</a>
                 </li>
                 <li>
@@ -69,13 +69,8 @@
             </ul>
         </li>
         <li>
-            <a href="#">Enlace</a>
-        </li>
-        <li>
-            <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Años</a>
-            <ul class="collapse list-unstyled" id="pageSubmenu">
-                <li><a  href="/anos">Todos los Años</a></li>
-                <li><a  href="/anos/new">Añadir Año</a></li>
+            <a href="#movimientosSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Movimientos</a>
+            <ul class="collapse list-unstyled {{seleccionaShow '/movimientos' path}}" id="movimientosSubmenu">
                 {{#each listaAnos}}
                 <li>
                     <a href="/movimientos/{{ano}}">{{ano}}</a>
@@ -84,10 +79,17 @@
             </ul>
         </li>
         <li>
-            <a href="#">Portfolio</a>
+            <a href="#anosSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Años</a>
+            <ul class="collapse list-unstyled {{seleccionaShow '/anos' path}}" id="anosSubmenu">
+                <li><a  href="/anos">Todos los Años</a></li>
+                <li><a  href="/anos/new">Añadir Año</a></li>
+            </ul>
         </li>
         <li>
-            <a href="#">Contact</a>
+            <a href="#">Otro1</a>
+        </li>
+        <li>
+            <a href="#">Otro2</a>
         </li>
     </ul>
 </nav>

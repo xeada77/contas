@@ -22,4 +22,11 @@ hbsHelpers.esValido = (inputName, errors) => {
         return "form-control is-valid";
     }
 }
+
+hbsHelpers.seleccionaShow = (elementPath, path) => {
+    if (path) {
+        return elementPath === path ? 'show' : '';
+    }
+    return '';
+}
 module.exports = hbsHelpers;

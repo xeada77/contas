@@ -8,13 +8,15 @@ router.get("/categorias", async (req, res) => {
     const categorias = await Categoria.find();
     res.render("categorias", {
         listaAnos: await helpers.listaAnos(),
-        categorias
+        categorias,
+        path: '/categorias'
     });
 });
 
 router.get("/categorias/add", async (req, res) => {
     res.render("categorias/nova-categoria", {
-        listaAnos: await helpers.listaAnos()
+        listaAnos: await helpers.listaAnos(),
+        path: '/categorias'
     });
 });
 

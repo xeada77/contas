@@ -1,0 +1,15 @@
+db.anos.aggregate([{$match:{ano: 2007}},{$unwind: "$movimientos"},{$group: {_id:{categoria:"$movimientos.categoria"}, total:{$sum: "$movimientos.cantidad"}}}])
+
+db.anos.aggregate([{
+    $match:{ano: 2007}},
+    {$unwind: "$movimientos"},
+    {$group: {_id: "$ano", 
+                total:{$sum: "$movimientos.cantidad"}}
+    }
+])
+
+db.anos.aggregate([{$match: { ano: 2007 }},{$unwind: "$movimientos"},{$match: { "movimientos.categoria.ingreso": true }},{$group: {_id: "$ano",total: { $sum: "$movimientos.cantidad" }}}])
+
+db.anos.aggregate([{$match: { ano: 2002 }},{$unwind: "$movimientos"},{$lookup: {from: "categorias", localField:"movimientos.categoria", foreignField: "_id", as:"categoria_doc"}},{$unwind: "$categoria_doc"}, {$match: {"categoria_doc.ingreso": false}}]).pretty()
+
+db.anos.aggregate([{$match: { ano: 2002 }},{$unwind: "$movimientos"},{$lookup: {from: "categorias", localField:"movimientos.categoria", foreignField: "_id", as:"categoria_doc"}},{$unwind: "$categoria_doc"}, {$match: {"categoria_doc.ingreso": true}}, {$group: {_id:"$ano", total:{$sum:"$movimientos.cantidad"}}}])

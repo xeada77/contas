@@ -1,0 +1,8 @@
+{{>resumen-ano}}
+<h2 class="p-2">
+    {{#if ingresos}}Ingresos{{else}}Gastos{{/if}}
+    <small class="text-muted">Año {{ano.ano}}</small>
+</h2>
+<div class="row">
+    {{>tabla-movimientos}}
+</div>

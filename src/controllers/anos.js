@@ -5,7 +5,8 @@ const helpers = require("../routes/helpers/helpers");
 exports.getAnos = async (req, res, next) => {
     res.render("anos", {
         listaAnos: await helpers.listaAnos(),
-        errors: res.locals.errors_msg
+        errors: res.locals.errors_msg,
+        path: '/anos'
     });
 };
 
@@ -13,7 +14,8 @@ exports.getAnos = async (req, res, next) => {
 exports.getNewAno = async (req, res) => {
     res.render("anos/novo-ano", {
         opcionesAnos: helpers.opcionesAnos(),
-        listaAnos: await helpers.listaAnos()
+        listaAnos: await helpers.listaAnos(),
+        path: '/anos'
     });
 };
 
@@ -35,7 +37,8 @@ exports.getEditAno = (req, res, next) => {
             res.render("anos/edit-ano", {
                 ano,
                 opcionesAnos: helpers.opcionesAnos(),
-                listaAnos: await helpers.listaAnos()
+                listaAnos: await helpers.listaAnos(),
+                path: '/anos'
             });
         })
         .catch(errors => {
@@ -89,7 +92,8 @@ exports.postNewAno = (req, res, next) => {
                 listaAnos: await helpers.listaAnos(),
                 errors_msg,
                 validation,
-                editAno: false
+                editAno: false,
+                path: '/anos'
             });
         });
 };
@@ -146,7 +150,8 @@ exports.putEditAno = async (req, res, next) => {
                 listaAnos: await helpers.listaAnos(),
                 errors_msg: errors,
                 validation,
-                getAno: getAno
+                getAno: getAno,
+                path: '/anos'
             });
         });
 };

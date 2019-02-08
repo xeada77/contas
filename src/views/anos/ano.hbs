@@ -1,29 +1,11 @@
+
+{{>resumen-ano}}
 <h2 class="p-2">
     Movimientos
     <small class="text-muted">Año {{ano.ano}}</small>
 </h2>
 <div class="row">
-    <table class="table table-striped  movimientos">
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col">Fecha</th>
-                <th scope="col">Concepto</th>
-                <th scope="col">Cantidad</th>
-                <th scope="col">Código Categoria</th>
-            </tr>
-        </thead>
-        <tbody id="cuerpotabla">
-            {{#each movimientos}}
-            <tr>
-                <td>{{formateaFecha fecha}}</td>
-                <td>{{concepto}}</td>
-                <td>{{cantidad}}€</td>
-                <td>{{categoria.codigo}}</td>
-            </tr>
-            {{/each}}
-        </tbody>
-    </table>
-
+    {{>tabla-movimientos}}
 </div>
 <div class="row">
     <div class="card w-100">
@@ -31,49 +13,47 @@
             <h3>Añadir Movimiento</h3>
         </div>
         <div class="card-body">
-            <form>
+            <form id="addMovimiento">
                 <div class="form-row">
                     <div class="form-group col-md-3">
                         <label for="seleccionfecha">Fecha</label>
                         <div class="input-group date" id="seleccionfecha" data-target-input="nearest">
-                            <input type="text" class="form-control datetimepicker-input" data-target="#seleccionfecha"
-                                placeholder="Fecha" id="fecha" />
-                            <div class="input-group-append" data-target="#seleccionfecha" data-toggle="datetimepicker">
+                            <div class="input-group-prepend" data-target="#seleccionfecha" data-toggle="datetimepicker">
                                 <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                             </div>
+                            <input type="text" class="form-control datetimepicker-input" data-target="#seleccionfecha"
+                                placeholder="Fecha" id="fecha" name="fecha"/>
+                            
                         </div>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="concepto">Concepto</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" id="concepto" placeholder="Concepto">
-                            <div class="input-group-append"><span class="input-group-text"><i class="fas fa-receipt"></i></span></div>
+                            <div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-receipt"></i></span></div>
+                            <input type="text" class="form-control" id="concepto" placeholder="Concepto" name="concepto">
+                            
                         </div>
                     </div>
                     <div class="form-group col-md-3">
                         <label for="cantidad">Cantidad</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" id="cantidad" placeholder="Cantidad">
-                            <div class="input-group-append">
+                            <div class="input-group-prepend">
                                 <span class="input-group-text">€</span>
                                 <span class="input-group-text">0.00</span>
                             </div>
+                            <input type="text" class="form-control" id="cantidad" placeholder="Cantidad" name="cantidad">
+                            
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="categoria">Categoria</label>
                     <div class="input-group">
-                        <select id="categoria" class="form-control custom-select">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputGroupSelect02">Opciones</label>
+                        </div>
+                        <select id="categoria" class="form-control custom-select" name="categoria">
                             <option selected disabled>Elegir...</option>
-                            <optgroup label="Ingresos">
-                                {{#each categorias}}
-                                {{#if ingreso}}
-                                <option class="opciones" data-id="{{_id}}">{{codigo}} - {{nombre}}
-                                </option>
-                                {{/if}}
-                                {{/each}}
-                            </optgroup>
                             <optgroup label="Gastos">
                                 {{#each categorias}}
                                 {{#unless ingreso}}
@@ -82,10 +62,15 @@
                                 {{/unless}}
                                 {{/each}}
                             </optgroup>
+                            <optgroup label="Ingresos">
+                                {{#each categorias}}
+                                {{#if ingreso}}
+                                <option class="opciones" data-id="{{_id}}">{{codigo}} - {{nombre}}
+                                </option>
+                                {{/if}}
+                                {{/each}}
+                            </optgroup>
                         </select>
-                        <div class="input-group-append">
-                            <label class="input-group-text" for="inputGroupSelect02">Opciones</label>
-                        </div>
                     </div>
                 </div>
                 <div class="form-row mt-4 justify-content-end">
