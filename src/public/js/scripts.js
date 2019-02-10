@@ -171,6 +171,11 @@ $(document).ready(function() {
                     <td>${dt.concepto}</td>
                     <td ${claseCantidad}">${dt.cantidad}€</td>
                     <td class="text-center">${dt.codigoCategoria}</td>
+                    <td class="text-center">
+                        <a  href="/movimientos/${dt.ano.ano}/edit/${dt.ano._id}"><span>
+                        <i class="fas fa-edit text-primary"></i></span>
+                        </a>
+                    </td>
                     </tr>`;
 
                     limpiarFormulario();

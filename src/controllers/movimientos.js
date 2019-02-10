@@ -117,6 +117,7 @@ exports.postAddMovimiento = async (req, res, next) => {
             const totalIngresos = await Ano.totalIngresos(ano.ano);
             const totalGastos = await Ano.totalGastos(ano.ano);
             const dt = {
+                ano: ano,
                 esIngreso: categoria.ingreso,
                 codigoCategoria: categoria.codigo,
                 cantidad: cantidad,
