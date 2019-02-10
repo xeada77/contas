@@ -5,7 +5,8 @@ exports.obtenSaldo = (saldo, ingresos, gastos) => {
     const g = new Decimal(gastos);
     const s = new Decimal(saldo);
     if (saldo) {
-        return s.plus(i).minus(g).toString();
+        //return s.plus(i).minus(g).toString();
+        return i.minus(g).toString();
     } else {
         return i.minus(g).toString();
     }

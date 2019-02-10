@@ -3,29 +3,37 @@ const helpers = require("../routes/helpers/helpers");
 const Categoria = require("../models/Categoria");
 const utils = require("../utils/helpers");
 
-exports.getMovimientos = async (req, res, next) => {
+exports.getDatosMovimientos = async (req, res, next) => {
     try {
         const ano = await Ano.findOne({ ano: req.params.anoId }).populate(
             "movimientos.categoria"
         );
         const totalIngresos = await Ano.totalIngresos(req.params.anoId);
         const totalGastos = await Ano.totalGastos(req.params.anoId);
-        
+        res.locals.datos = { ano, totalIngresos, totalGastos };
+        return next();
+    } catch (error) {
+        console.log(error);
+        req.flash("errors_msg", "Ha Sucedido Un Error Middle.");
+        return res.redirect("/anos");
+    }
+}
 
-
+exports.getMovimientos = async (req, res, next) => {
+    try {   
         return res.render("anos/ano", {
-            ano,
-            movimientos: ano.movimientos,
+            ano: res.locals.datos.ano,
+            movimientos: res.locals.datos.ano.movimientos,
             listaAnos: await helpers.listaAnos(),
             categorias: await helpers.listaCategorias(),
             resumen: {
                 saldoActual: utils.obtenSaldo(
-                    ano.saldoinicial.toString(),
-                    totalIngresos,
-                    totalGastos
+                    res.locals.datos.ano.saldoinicial.toString(),
+                    res.locals.datos.totalIngresos,
+                    res.locals.datos.totalGastos
                 ),
-                totalIngresos: totalIngresos,
-                totalGastos: totalGastos
+                totalIngresos: res.locals.datos.totalIngresos,
+                totalGastos: res.locals.datos.totalGastos
             },
             path: '/movimientos'
         });
@@ -38,26 +46,19 @@ exports.getMovimientos = async (req, res, next) => {
 
 exports.getMovimientosIngresos = async (req, res, next) => {
     try {
-        const ano = await Ano.findOne({ ano: parseInt(req.params.anoId) }).populate(
-            "movimientos.categoria"
-        );
-
-        const totalIngresos = await Ano.totalIngresos(req.params.anoId);
-        const totalGastos = await Ano.totalGastos(req.params.anoId);
-
         return res.render("movimientos/ingresos-gastos", {
-            ano,
-            movimientos: ano.movimientos,
+            ano: res.locals.datos.ano,
+            movimientos: res.locals.datos.ano.movimientos,
             listaAnos: await helpers.listaAnos(),
             categorias: await helpers.listaCategorias(),
             resumen: {
                 saldoActual: utils.obtenSaldo(
-                    ano.saldoinicial.toString(),
-                    totalIngresos,
-                    totalGastos
+                    res.locals.datos.ano.saldoinicial.toString(),
+                    res.locals.datos.totalIngresos,
+                    res.locals.datos.totalGastos
                 ),
-                totalIngresos: totalIngresos,
-                totalGastos: totalGastos
+                totalIngresos: res.locals.datos.totalIngresos,
+                totalGastos: res.locals.datos.totalGastos
             },
             path: '/movimientos',
             detalleMovimientos: true,
@@ -73,26 +74,20 @@ exports.getMovimientosIngresos = async (req, res, next) => {
 
 exports.getMovimientosGastos = async (req, res, next) => {
     try {
-        const ano = await Ano.findOne({ ano: parseInt(req.params.anoId) }).populate(
-            "movimientos.categoria"
-        );
-
-        const totalIngresos = await Ano.totalIngresos(req.params.anoId);
-        const totalGastos = await Ano.totalGastos(req.params.anoId);
 
         return res.render("movimientos/ingresos-gastos", {
-            ano,
-            movimientos: ano.movimientos,
+            ano: res.locals.datos.ano,
+            movimientos: res.locals.datos.ano.movimientos,
             listaAnos: await helpers.listaAnos(),
             categorias: await helpers.listaCategorias(),
             resumen: {
                 saldoActual: utils.obtenSaldo(
-                    ano.saldoinicial.toString(),
-                    totalIngresos,
-                    totalGastos
+                    res.locals.datos.ano.saldoinicial.toString(),
+                    res.locals.datos.totalIngresos,
+                    res.locals.datos.totalGastos
                 ),
-                totalIngresos: totalIngresos,
-                totalGastos: totalGastos
+                totalIngresos: res.locals.datos.totalIngresos,
+                totalGastos: res.locals.datos.totalGastos
             },
             path: '/movimientos',
             detalleMovimientos: true,

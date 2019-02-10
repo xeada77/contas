@@ -1,6 +1,8 @@
 const Ano = require("../models/Ano");
 const helpers = require("../routes/helpers/helpers");
 
+const remanenteId = '5c49be3c2205160e04089265';
+
 // Devuelve la pagina con todos los años almacenados
 exports.getAnos = async (req, res, next) => {
     res.render("anos", {
@@ -61,7 +63,12 @@ exports.postNewAno = (req, res, next) => {
             const newAno = new Ano({
                 ano: parseInt(req.body.ano),
                 saldoinicial: parseFloat(req.body.saldoinicial)
-                //saldoinicial: req.body.saldoinicial
+            });
+            newAno.movimientos.push({
+                fecha: new Date(parseInt(req.body.ano), 0, 1),
+                concepto: 'Incorporacion Remanente Año Anterior',
+                cantidad: parseFloat(req.body.saldoinicial),
+                categoria: remanenteId
             });
             try {
                 await newAno.save();

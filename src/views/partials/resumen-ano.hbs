@@ -1,28 +1,51 @@
-
-    <div class="card-deck text-center mb-3" id="resumenCards">
-        <div class="card border-info">
-            <div class="card-body">
-                <h5 class="card-title">Saldo Inicial</h5>
-                <p class="card-text text-info" id="resumenSaldoInicial">{{#if ano}}{{ano.saldoinicial}}{{else}}0{{/if}} €</p>
-            </div>
+<div class="container">   
+    <div class="row justify-content-between align-items-center p-2">
+            <h2>
+                Resumen
+                <small class="text-muted">Año {{ano.ano}}</small>
+            </h2>
+    </div>
+</div>
+<div class="card-deck text-center mb-3" id="resumenCards">
+    <div class="card border-info">
+        <div class="card-header bg-white">
+            <h5 class="card-title">Saldo Inicial</h5>
         </div>
-        <div class="card border-success">
-            <a href="/movimientos/{{ano.ano}}/ingresos"><div class="card-body">
-                <h5 class="card-title ">Total Ingresos</h5>
-                <p class="card-text text-success text-bold" id="resumenTotalIngresos">{{#if resumen.totalIngresos}}{{resumen.totalIngresos}}{{else}}0{{/if}} €</p>
-            </div></a>
-        </div>
-        <div class="card border-danger">
-            <a href="/movimientos/{{ano.ano}}/gastos"><div class="card-body">
-                <h5 class="card-title">Total Gastos</h5>
-                <p class="card-text text-danger" id="resumenTotalGastos">{{#if resumen.totalGastos}}{{resumen.totalGastos}}{{else}}0{{/if}} €</p>
-            </div></a>
-        </div>
-        
-        <div class="card border-info">
-            <div class="card-body">
-                <h5 class="card-title">Saldo Actual</h5>
-                <p class="card-text text-info" id="resumenSaldoActual">{{#if resumen.saldoActual}}{{resumen.saldoActual}}{{else}}0{{/if}} €</p>
-            </div>
+        <div class="card-body">
+            <p class="card-text text-info" id="resumenSaldoInicial">{{#if ano}}{{ano.saldoinicial}}{{else}}0{{/if}} €</p>
         </div>
     </div>
+    <div class="card border-success">
+        <a href="/movimientos/{{ano.ano}}/ingresos">
+            <div class="card-header bg-white">
+                <h5 class="card-title ">Total Ingresos</h5>
+            </div>
+            <div class="card-body">
+
+                <p class="card-text text-success text-bold" id="resumenTotalIngresos">{{#if
+                    resumen.totalIngresos}}{{resumen.totalIngresos}}{{else}}0{{/if}} €</p>
+            </div>
+        </a>
+    </div>
+    <div class="card border-danger">
+        <a href="/movimientos/{{ano.ano}}/gastos">
+            <div class="card-header bg-white">
+                <h5 class="card-title ">Total Gastos</h5>
+            </div>
+            <div class="card-body">
+                <p class="card-text text-danger" id="resumenTotalGastos">{{#if
+                    resumen.totalGastos}}{{resumen.totalGastos}}{{else}}0{{/if}} €</p>
+            </div>
+        </a>
+    </div>
+
+    <div class="card border-info">
+        <div class="card-header bg-white">
+            <h5 class="card-title">Saldo Actual</h5>
+        </div>
+        <div class="card-body">
+            <p class="card-text text-info" id="resumenSaldoActual">{{#if
+                resumen.saldoActual}}{{resumen.saldoActual}}{{else}}0{{/if}} €</p>
+        </div>
+    </div>
+</div>

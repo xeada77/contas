@@ -32,9 +32,6 @@ $(function() {
     $("#seleccionfecha").datetimepicker("locale", "es");
 });
 
-$(document).ready(function() {
-   
-});
 
 $(document).ready(function() {
     const ano = $("#guardar-movimiento").data("ano");
@@ -44,6 +41,7 @@ $(document).ready(function() {
         e.preventDefault();
         limpiarFormulario();
     });
+
 
 
     // Script pra cerrar-abrir menu lateral
