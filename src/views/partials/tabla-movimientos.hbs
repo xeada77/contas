@@ -1,53 +1,67 @@
-<table class="table table-striped table-bordered  movimientos">
-    <thead class="thead-dark text-center">
-        <tr>
-            <th class="col-sm-1" scope="col">Fecha</th>
-            <th class="col-sm-6" scope="col">Concepto</th>
-            <th class="col-sm-2" scope="col">Cantidad</th>
-            <th class="col-sm-2" scope="col">Código Categoria</th>
-            <th class="col-sm-1" scope="col"></th>
+<div class="table-responsive">
+    <table class="table table-striped table-bordered table-sm movimientos">
+        <thead class="thead-dark text-center">
+            <tr>
+                <th class="col-auto" scope="col">Fecha</th>
+                <th class="col-6" scope="col">Concepto</th>
+                <th class="col-2" scope="col">Cantidad</th>
+                <th class="col-2" scope="col">Código Categoria</th>
+                <th class="col-1" scope="col"></th>
 
-        </tr>
-    </thead>
-    <tbody id="cuerpotabla">
-        {{#if detalleMovimientos}}
-        {{#each movimientos}}
-        {{#if ../ingresos}}{{#if categoria.ingreso}}
-        <tr>
-            <td class="text-center">{{formateaFecha fecha}}</td>
-            <td>{{concepto}}</td>
-            <td {{#unless categoria.ingreso}} class="text-left text-danger" {{else}} class="text-right text-success"
-                {{/unless}}>{{cantidad}}€</td>
-            <td class="text-center">{{categoria.codigo}}</td>
-        </tr>
-        {{/if}}
-        {{else}}{{#unless categoria.ingreso}}
-        <tr>
-            <td class="text-center">{{formateaFecha fecha}}</td>
-            <td>{{concepto}}</td>
-            <td {{#unless categoria.ingreso}} class="text-left text-danger" {{else}} class="text-right text-success"
-                {{/unless}}>{{cantidad}}€</td>
-            <td class="text-center">{{categoria.codigo}}</td>
-        </tr>
-        {{/unless}}
-        {{/if}}
-        {{/each}}
-        {{else}}
-        {{#each movimientos}}
-        <tr>
-            <td class="text-center">{{formateaFecha fecha}}</td>
-            <td>{{concepto}}</td>
-            <td {{#unless categoria.ingreso}} class="text-left text-danger" {{else}} class="text-right text-success"
-                {{/unless}}>{{cantidad}}€</td>
-            <td class="text-center">{{categoria.codigo}}</td>
-            <td class="text-center"><a  href="/movimientos/{{../ano.ano}}/edit/{{id}}">
-                <span>
-                    <i class="fas fa-edit text-primary"></i>
-                </span>
-                </a>
-            </td>
-        </tr>
-        {{/each}}
-        {{/if}}
-    </tbody>
-</table>
+            </tr>
+        </thead>
+        <tbody id="cuerpotabla">
+            {{#if detalleMovimientos}}
+            {{#each movimientos}}
+            {{#if ../ingresos}}{{#if categoria.ingreso}}
+            <tr>
+                <td class="text-center">{{formateaFecha fecha}}</td>
+                <td>{{concepto}}</td>
+                <td {{#unless categoria.ingreso}} class="text-left text-danger" {{else}} class="text-right text-success"
+                    {{/unless}}>{{cantidad}}€</td>
+                <td class="text-center">{{categoria.codigo}}</td>
+                <td class="text-center"><a href="/movimientos/{{../ano.ano}}/edit/{{id}}">
+                        <span>
+                            <i class="fas fa-edit text-primary"></i>
+                        </span>
+                    </a>
+                </td>
+            </tr>
+            {{/if}}
+            {{else}}{{#unless categoria.ingreso}}
+            <tr>
+                <td class="text-center">{{formateaFecha fecha}}</td>
+                <td>{{concepto}}</td>
+                <td {{#unless categoria.ingreso}} class="text-left text-danger" {{else}} class="text-right text-success"
+                    {{/unless}}>{{cantidad}}€</td>
+                <td class="text-center">{{categoria.codigo}}</td>
+                <td class="text-center"><a href="/movimientos/{{../ano.ano}}/edit/{{id}}">
+                        <span>
+                            <i class="fas fa-edit text-primary"></i>
+                        </span>
+                    </a>
+                </td>
+            </tr>
+            {{/unless}}
+            {{/if}}
+            {{/each}}
+            {{else}}
+            {{#each movimientos}}
+            <tr>
+                <td class="text-center">{{formateaFecha fecha}}</td>
+                <td>{{concepto}}</td>
+                <td {{#unless categoria.ingreso}} class="text-left text-danger" {{else}} class="text-right text-success"
+                    {{/unless}}>{{cantidad}}€</td>
+                <td class="text-center">{{categoria.codigo}}</td>
+                <td class="text-center"><a href="/movimientos/{{../ano.ano}}/edit/{{id}}">
+                        <span>
+                            <i class="fas fa-edit text-primary"></i>
+                        </span>
+                    </a>
+                </td>
+            </tr>
+            {{/each}}
+            {{/if}}
+        </tbody>
+    </table>
+</div>

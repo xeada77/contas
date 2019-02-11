@@ -1,95 +1,51 @@
-<!--<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-        <a class="navbar-brand" href="/anos">Contas</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
-            aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/categorias">Categorias</a>
-                </li>
+<nav class="col-md-2 d-none d-md-block bg-light sidebar">
+    <div class="sidebar-sticky">
+        <ul class="nav flex-column">
+            <li class="nav-item ">
+                <a href="#categoriasSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link {{esActivo '/categorias' path}}">
+                    Categorias
+                </a>
+                <ul class="collapse list-unstyled {{seleccionaShow '/categorias' path}}" id="categoriasSubmenu">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/categorias">Todas las Categorias</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/categorias/add">Añadir Categoria</a>
+                    </li>
             </ul>
-            <ul class="navbar-nav ml-auto">-->
-<!--
-                <li class="nav-item active">
-                    <div class="nav-link">{{user.name}}</div>
-                </li>-->
-<!--<li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                        Años
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="/anos">Todos los Años</a>
-                        <a class="dropdown-item" href="/anos/new">Añadir Año</a>
-                        <div class="dropdown-divider"></div>
-                        {{#each listaAnos}}
-                        <a class="dropdown-item" href="/movimientos/{{ano}}">{{ano}}</a>
-                        {{/each}}
-                    </div>
-                </li>-->
-<!--
-                <li class="nav-item active">
-                    <a class="nav-link" href="/users/signin">SigIn</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="/users/signup">SignUp</a>
-                </li>
-                -->
-<!--</ul>
-        </div>
-    </div>
-</nav>-->
+            </li>
+            <li class="nav-item">
+                <a href="#movimientosSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link {{esActivo '/movimientos' path}}">Movimientos</a>
+                <ul class="collapse list-unstyled {{seleccionaShow '/movimientos' path}}" id="movimientosSubmenu">
+                    {{#each listaAnos}}
+                    <li class="nav-item">
+                    <a class="nav-link" href="/movimientos/{{ano}}">{{ano}}</a>
+                    </li>
+                    {{/each}}
+            </ul>
+            </li>
+            <li class="nav-item">
+                <a href="#anosSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link {{esActivo '/anos' path}}">Años</a>
+                <ul class="collapse list-unstyled {{seleccionaShow '/anos' path}}" id="anosSubmenu">
+                <li class="nav-item"><a class="nav-link"  href="/anos">Todos los Años</a></li>
+                <li class="nav-item"><a class="nav-link"  href="/anos/new">Añadir Año</a></li>
+                </ul>
+            </li>
+        </ul>
 
-<nav id="sidebar">
-    <div class="sidebar-header">
-        <h3>Contas</h3>
-        <h3>CEIP Vicedo</h3>
-    </div>
+        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+            <span>Otros</span>
+            <a class="d-flex align-items-center text-muted" href="#">
 
-    <ul class="list-unstyled components">
-        <p>Dummy Heading</p>
-        <li >
-            <a href="#categoriasSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Categorias</a>
-            <ul class="collapse list-unstyled {{seleccionaShow '/categorias' path}}" id="categoriasSubmenu">
-                <li>
-                    <a href="/categorias">Todas las Categorias</a>
-                </li>
-                <li >
-                    <a href="/categorias/add">Añadir Categoria</a>
-                </li>
-                <li>
-                    <a href="#">Home 3</a>
-                </li>
-            </ul>
-        </li>
-        <li>
-            <a href="#movimientosSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Movimientos</a>
-            <ul class="collapse list-unstyled {{seleccionaShow '/movimientos' path}}" id="movimientosSubmenu">
-                {{#each listaAnos}}
-                <li>
-                    <a href="/movimientos/{{ano}}">{{ano}}</a>
-                </li>
-                {{/each}}
-            </ul>
-        </li>
-        <li>
-            <a href="#anosSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Años</a>
-            <ul class="collapse list-unstyled {{seleccionaShow '/anos' path}}" id="anosSubmenu">
-                <li><a  href="/anos">Todos los Años</a></li>
-                <li><a  href="/anos/new">Añadir Año</a></li>
-            </ul>
-        </li>
-        <li>
-            <a href="#">Otro1</a>
-        </li>
-        <li>
-            <a href="#">Otro2</a>
-        </li>
-    </ul>
+            </a>
+        </h6>
+        <ul class="nav flex-column mb-2">
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+
+                    Current month
+                </a>
+            </li>
+        </ul>
+    </div>
 </nav>

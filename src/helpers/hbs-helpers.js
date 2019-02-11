@@ -29,4 +29,12 @@ hbsHelpers.seleccionaShow = (elementPath, path) => {
     }
     return '';
 }
+
+hbsHelpers.esActivo = (elementPath, path) => {
+    if (path) {
+        return elementPath === path ? 'active' : '';
+    }
+    return '';
+}
+
 module.exports = hbsHelpers;

@@ -18,9 +18,17 @@ router.get(
     movimientosController.getMovimientosGastos
 );
 
+router.get(
+    '/movimientos/:anoId/edit/:movimientoId', movimientosController.getEditMovimiento);
+
 router.post(
     "/movimientos/:anoId/addmovimiento",
     movimientosController.postAddMovimiento
+);
+
+router.put(
+    '/movimientos/:anoId/edit/:movimientoId',
+    movimientosController.putEditMovimiento
 );
 
 module.exports = router;

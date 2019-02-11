@@ -1,29 +1,9 @@
-{{>resumen-ano}}
-
-<div class="d-flex justify-content-between align-items-center py-2">
-    <div>
-    <h2>
-        Movimientos
-        <small class="text-muted">Año {{ano.ano}}</small>
-    </h2>
-    </div>
-    <div class="btn-group" role="group" aria-label="Basic example">
-        <a href="#" type="button" class="btn btn-sm btn-outline-secondary" role="button">1º Trimestre</a>
-        <a href="#" type="button" class="btn btn-sm btn-outline-secondary">2º Trimestre</a>
-        <a href="#" type="button" class="btn btn-sm btn-outline-secondary">3º Trimestre</a>
-    </div>
-</div>
-
-
-{{>tabla-movimientos}}
-
-
 <div class="card w-100">
     <div class="card-header">
-        <h3>Añadir Movimiento</h3>
+        <h3>Editar Movimiento</h3>
     </div>
     <div class="card-body">
-        <form id="addMovimiento">
+        <form action="/movimientos/{{movimiento.anoId}}/edit/{{movimiento.id}}?_method=PUT" id="editMovimiento" method="POST">
             <div class="form-row">
                 <div class="form-group col-md-3">
                     <label for="seleccionfecha">Fecha</label>
@@ -32,7 +12,7 @@
                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                         </div>
                         <input type="text" class="form-control datetimepicker-input" data-target="#seleccionfecha"
-                            placeholder="Fecha" id="fecha" name="fecha" />
+                            placeholder="Fecha" id="fecha" name="fecha"/>
 
                     </div>
                 </div>
@@ -40,7 +20,7 @@
                     <label for="concepto">Concepto</label>
                     <div class="input-group">
                         <div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-receipt"></i></span></div>
-                        <input type="text" class="form-control" id="concepto" placeholder="Concepto" name="concepto">
+                        <input type="text" class="form-control" id="concepto" placeholder="Concepto" name="concepto" value="{{movimiento.concepto}}">
 
                     </div>
                 </div>
@@ -51,7 +31,7 @@
                             <span class="input-group-text">€</span>
                             <span class="input-group-text">0.00</span>
                         </div>
-                        <input type="text" class="form-control" id="cantidad" placeholder="Cantidad" name="cantidad">
+                        <input type="text" class="form-control" id="cantidad" placeholder="Cantidad" name="cantidad" value="{{movimiento.cantidad}}">
 
                     </div>
                 </div>
@@ -63,7 +43,13 @@
                         <label class="input-group-text" for="inputGroupSelect02">Opciones</label>
                     </div>
                     <select id="categoria" class="form-control custom-select" name="categoria">
+                        {{#if movimiento.categoriaId}}
+                        <option class="opciones" data-id="{{movimiento.categoriaId}}">
+                            {{movimiento.categoriaCodigo}} - {{movimiento.categoriaNombre}}
+                            </option>
+                        {{else}}
                         <option selected disabled>Elegir...</option>
+                        {{/if}}
                         <optgroup label="Gastos">
                             {{#each categorias}}
                             {{#unless ingreso}}
@@ -83,10 +69,11 @@
                     </select>
                 </div>
             </div>
+            <input type="hidden" name="_method" value="PUT">
             <div class="form-row mt-4 justify-content-end">
                 <button type="button" class="btn btn-danger " id="limpiar-movimiento">Limpiar</button>
                 <button type="submit" class="btn btn-primary ml-2" id="guardar-movimiento" data-id="{{ano._id}}"
-                    data-fecha="01/01/{{ano.ano}}">Guardar</button>
+                    data-fecha="{{formateaFecha movimiento.fecha}}">Editar</button>
             </div>
         </form>
     </div>

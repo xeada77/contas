@@ -22,27 +22,32 @@ const limpiarFormulario = () => {
 
 // Datepicker
 $(function() {
-    const ano = $("#guardar-movimiento").data("ano");
-    $("#seleccionfecha").datetimepicker({
-        format: "L",
-        format: "DD/MM/YYYY",
-        defaultDate: new Date(ano, 0, 1)
-        //maxDate: new Date(ano,11,31),
-    });
+    const fecha = $("#guardar-movimiento").data("fecha");
+    if (fecha !== undefined) {
+        const adata = fecha.split("/");
+        const gg = parseInt(adata[0], 10);
+        const mm = parseInt(adata[1], 10);
+        const aaaa = parseInt(adata[2], 10);
+        $("#seleccionfecha").datetimepicker({
+            format: "L",
+            format: "DD/MM/YYYY",
+            defaultDate: new Date(aaaa, mm - 1, gg)
+        });
+    }
+
     $("#seleccionfecha").datetimepicker("locale", "es");
 });
 
+$(document).ready(function () {
+    const fecha = $("#guardar-movimiento").data("fecha");
+    const adata = fecha.split("/");
+    const ano = parseInt(adata[2], 10);
 
-$(document).ready(function() {
-    const ano = $("#guardar-movimiento").data("ano");
-    
     // Escucha evento del boton limpiar para limpiar el formulario de movimientos
     $("#limpiar-movimiento").click(function(e) {
         e.preventDefault();
         limpiarFormulario();
     });
-
-
 
     // Script pra cerrar-abrir menu lateral
     $("#sidebarCollapse").on("click", function() {
@@ -165,14 +170,18 @@ $(document).ready(function() {
             $.post("/movimientos/" + data.ano + "/addmovimiento", data).done(
                 dt => {
                     console.log(dt);
-                    const claseCantidad = dt.esIngreso ? 'class="text-right text-success"' : 'class="text-left text-danger"';
+                    const claseCantidad = dt.esIngreso
+                        ? 'class="text-right text-success"'
+                        : 'class="text-left text-danger"';
                     const html = `<tr>
                     <td class="text-center">${fechaTemp}</td>
                     <td>${dt.concepto}</td>
                     <td ${claseCantidad}">${dt.cantidad}€</td>
                     <td class="text-center">${dt.codigoCategoria}</td>
                     <td class="text-center">
-                        <a  href="/movimientos/${dt.ano.ano}/edit/${dt.ano._id}"><span>
+                        <a  href="/movimientos/${dt.ano.ano}/edit/${
+                        dt.ano._id
+                    }"><span>
                         <i class="fas fa-edit text-primary"></i></span>
                         </a>
                     </td>
@@ -180,15 +189,75 @@ $(document).ready(function() {
 
                     limpiarFormulario();
 
-                    $('p#resumenSaldoActual').text(dt.resumen.saldoActual + ' €');
-                    $('p#resumenSaldoInicial').text(dt.resumen.saldoInicial + ' €');
-                    $('p#resumenTotalIngresos').text(dt.resumen.totalIngresos + ' €');
-                    $('p#resumenTotalGastos').text(dt.resumen.totalGastos + ' €');
+                    $("p#resumenSaldoActual").text(
+                        dt.resumen.saldoActual + " €"
+                    );
+                    $("p#resumenSaldoInicial").text(
+                        dt.resumen.saldoInicial + " €"
+                    );
+                    $("p#resumenTotalIngresos").text(
+                        dt.resumen.totalIngresos + " €"
+                    );
+                    $("p#resumenTotalGastos").text(
+                        dt.resumen.totalGastos + " €"
+                    );
                     $(html).appendTo("#cuerpotabla");
                 }
             );
         }
     });
+
+    $("#editMovimiento").validate({
+        rules: {
+            fecha: {
+                required: true,
+                datePerso: parseInt(ano)
+            },
+            concepto: {
+                required: true,
+                minlength: 6
+            },
+            cantidad: { required: true, currency: ["€", false] },
+            categoria: "required"
+        },
+        messages: {
+            fecha: {
+                required: "Por favor introduzca una fecha.",
+                datePerso: "Introduzca una fecha valida de " + ano + "."
+            },
+            concepto: {
+                required: "El concepto es requerido.",
+                minlength: "Longuitud mínima no alcanzada."
+            },
+            cantidad: {
+                required: "Introduzca la cantidad.",
+                currency: "Formato incorrecto."
+            },
+            categoria: "Por favor elija una categoría."
+        },
+        errorElement: "em",
+        errorPlacement: function(error, element) {
+            // Add the `invalid-feedback` class to the error element
+            error.addClass("invalid-feedback");
+            if (element.prop("type") === "checkbox") {
+                error.insertAfter(element.next("label"));
+            } else {
+                error.insertAfter(element);
+            }
+        },
+        highlight: function(element, errorClass, validClass) {
+            $(element)
+                .addClass("is-invalid")
+                .removeClass("is-valid");
+        },
+        unhighlight: function(element, errorClass, validClass) {
+            $(element)
+                .addClass("is-valid")
+                .removeClass("is-invalid");
+        },
+        submitHandler: function () {
+            console.log('validado');
+            return true;
+        }
+    });
 });
-
-

@@ -2,6 +2,8 @@ const Ano = require("../models/Ano");
 const helpers = require("../routes/helpers/helpers");
 const Categoria = require("../models/Categoria");
 const utils = require("../utils/helpers");
+const { Types } = require("mongoose");
+const moment = require("moment");
 
 exports.getDatosMovimientos = async (req, res, next) => {
     try {
@@ -13,14 +15,14 @@ exports.getDatosMovimientos = async (req, res, next) => {
         res.locals.datos = { ano, totalIngresos, totalGastos };
         return next();
     } catch (error) {
-        console.log(error);
+        console.log(error.message);
         req.flash("errors_msg", "Ha Sucedido Un Error Middle.");
         return res.redirect("/anos");
     }
-}
+};
 
 exports.getMovimientos = async (req, res, next) => {
-    try {   
+    try {
         return res.render("anos/ano", {
             ano: res.locals.datos.ano,
             movimientos: res.locals.datos.ano.movimientos,
@@ -35,10 +37,10 @@ exports.getMovimientos = async (req, res, next) => {
                 totalIngresos: res.locals.datos.totalIngresos,
                 totalGastos: res.locals.datos.totalGastos
             },
-            path: '/movimientos'
+            path: "/movimientos"
         });
     } catch (error) {
-        console.log(error);
+        console.log(error.message);
         req.flash("errors_msg", "Ha Sucedido Un Error");
         return res.redirect("/anos");
     }
@@ -60,21 +62,19 @@ exports.getMovimientosIngresos = async (req, res, next) => {
                 totalIngresos: res.locals.datos.totalIngresos,
                 totalGastos: res.locals.datos.totalGastos
             },
-            path: '/movimientos',
+            path: "/movimientos",
             detalleMovimientos: true,
-            ingresos: true ,
+            ingresos: true
         });
-
     } catch (error) {
-        console.log(error);
+        console.log(error.message);
         req.flash("errors_msg", "Ha Sucedido Un Error");
         return res.redirect("/anos");
     }
-}
+};
 
 exports.getMovimientosGastos = async (req, res, next) => {
     try {
-
         return res.render("movimientos/ingresos-gastos", {
             ano: res.locals.datos.ano,
             movimientos: res.locals.datos.ano.movimientos,
@@ -89,17 +89,59 @@ exports.getMovimientosGastos = async (req, res, next) => {
                 totalIngresos: res.locals.datos.totalIngresos,
                 totalGastos: res.locals.datos.totalGastos
             },
-            path: '/movimientos',
+            path: "/movimientos",
             detalleMovimientos: true,
-            ingresos: false ,
+            ingresos: false
         });
-
     } catch (error) {
-        console.log(error);
+        console.log(error.message);
         req.flash("errors_msg", "Ha Sucedido Un Error");
         return res.redirect("/anos");
     }
-}
+};
+
+exports.getEditMovimiento = async (req, res, next) => {
+    const movimientoId = Types.ObjectId(req.params.movimientoId);
+
+    try {
+        const movimiento = await Ano.aggregate([
+            { $match: { ano: parseInt(req.params.anoId) } },
+            { $unwind: "$movimientos" },
+            {
+                $lookup: {
+                    from: "categorias",
+                    localField: "movimientos.categoria",
+                    foreignField: "_id",
+                    as: "categoria_doc"
+                }
+            },
+            { $match: { "movimientos._id": movimientoId } }
+        ]);
+        const movimientoFormated = {
+            anoId: movimiento[0].ano,
+            concepto: movimiento[0].movimientos.concepto,
+            cantidad: movimiento[0].movimientos.cantidad.toString(),
+            fecha: movimiento[0].movimientos.fecha,
+            id: movimiento[0].movimientos._id,
+            categoriaNombre: movimiento[0].categoria_doc[0].nombre,
+            categoriaId: movimiento[0].categoria_doc[0]._id,
+            categoriaCodigo: movimiento[0].categoria_doc[0].codigo
+        };
+
+        return res.render("movimientos/edit-movimiento", {
+            movimiento: movimientoFormated,
+            listaAnos: await helpers.listaAnos(),
+            categorias: await helpers.listaCategorias()
+        });
+    } catch (error) {
+        console.log(error.message);
+        req.flash(
+            "errors_msg",
+            "Ha Sucedido Un Error Al intentar acceder al movimiento."
+        );
+        return res.redirect("/movimientos/" + req.params.anoId);
+    }
+};
 
 exports.postAddMovimiento = async (req, res, next) => {
     const { fecha, concepto, cantidad, categoriaId, anoId } = req.body;
@@ -136,7 +178,43 @@ exports.postAddMovimiento = async (req, res, next) => {
             return res.send(dt);
         }
     } catch (err) {
-        console.log(err);
+        console.log(err.message);
         res.send("fallo");
+    }
+};
+
+exports.putEditMovimiento = async (req, res, next) => {
+    const movimientoId = Types.ObjectId(req.params.movimientoId);
+    const cat = req.body.categoria.split("-");
+    const fecha = moment(req.body.fecha, "DD-MM-YYYY").toDate();
+
+    try {
+        const categoria = await Categoria.findOne({ codigo: cat[0].trim() });
+        await Ano.updateOne(
+            {
+                ano: parseInt(req.params.anoId),
+                "movimientos._id": movimientoId
+            },
+            {
+                $set: {
+                    "movimientos.$.concepto": req.body.concepto,
+                    "movimientos.$.categoria": categoria,
+                    "movimientos.$.cantidad": parseFloat(req.body.cantidad),
+                    "movimientos.$.fecha": fecha
+                }
+            }
+        );
+        req.flash(
+            "success_msg",
+            "El movimiento ha sido actualizado satisfactoriamente."
+        );
+        return res.redirect("/movimientos/" + req.params.anoId);
+    } catch (error) {
+        console.log(error.message);
+        req.flash(
+            "errors_msg",
+            "Ha Sucedido Un Error Al intentar acceder al movimiento."
+        );
+        return res.redirect("/movimientos/" + req.params.anoId);
     }
 };
