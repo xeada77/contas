@@ -40,8 +40,11 @@ $(function() {
 
 $(document).ready(function () {
     const fecha = $("#guardar-movimiento").data("fecha");
-    const adata = fecha.split("/");
-    const ano = parseInt(adata[2], 10);
+    let ano;
+    if (fecha !== undefined) {
+        const adata = fecha.split("/");
+        ano = parseInt(adata[2], 10);
+    }
 
     // Escucha evento del boton limpiar para limpiar el formulario de movimientos
     $("#limpiar-movimiento").click(function(e) {
@@ -154,10 +157,10 @@ $(document).ready(function () {
             //console.log($(this).data('id'));
             const data = {};
 
-            data.fecha = new Date(
+            data.fecha = new Date(Date.UTC(
                 fechaTemp.substring(6),
                 parseInt(fechaTemp.substring(3, 5)) - 1,
-                fechaTemp.substring(0, 2)
+                fechaTemp.substring(0, 2))
             );
             data.concepto = $("#concepto").val();
             data.cantidad = parseFloat($("#cantidad").val());
@@ -180,7 +183,7 @@ $(document).ready(function () {
                     <td class="text-center">${dt.codigoCategoria}</td>
                     <td class="text-center">
                         <a  href="/movimientos/${dt.ano.ano}/edit/${
-                        dt.ano._id
+                        dt.movimientoId
                     }"><span>
                         <i class="fas fa-edit text-primary"></i></span>
                         </a>

@@ -102,7 +102,6 @@ exports.getMovimientosGastos = async (req, res, next) => {
 
 exports.getEditMovimiento = async (req, res, next) => {
     const movimientoId = Types.ObjectId(req.params.movimientoId);
-
     try {
         const movimiento = await Ano.aggregate([
             { $match: { ano: parseInt(req.params.anoId) } },
@@ -117,8 +116,9 @@ exports.getEditMovimiento = async (req, res, next) => {
             },
             { $match: { "movimientos._id": movimientoId } }
         ]);
+        //console.log(movimiento);
         const movimientoFormated = {
-            anoId: movimiento[0].ano,
+            anoId: req.params.anoId,
             concepto: movimiento[0].movimientos.concepto,
             cantidad: movimiento[0].movimientos.cantidad.toString(),
             fecha: movimiento[0].movimientos.fecha,
@@ -148,6 +148,7 @@ exports.postAddMovimiento = async (req, res, next) => {
     try {
         const categoria = await Categoria.findById(categoriaId);
         const ano = await Ano.findById(anoId);
+        console.log(fecha);
         if (ano) {
             ano.movimientos.push({
                 fecha,
@@ -155,6 +156,7 @@ exports.postAddMovimiento = async (req, res, next) => {
                 cantidad,
                 categoria: categoriaId
             });
+            const ultimoMovimiento = ano.movimientos[ano.movimientos.length - 1];
             await ano.save();
             const totalIngresos = await Ano.totalIngresos(ano.ano);
             const totalGastos = await Ano.totalGastos(ano.ano);
@@ -173,7 +175,8 @@ exports.postAddMovimiento = async (req, res, next) => {
                     ),
                     totalIngresos: totalIngresos,
                     totalGastos: totalGastos
-                }
+                },
+                movimientoId: ultimoMovimiento._id
             };
             return res.send(dt);
         }
@@ -186,7 +189,7 @@ exports.postAddMovimiento = async (req, res, next) => {
 exports.putEditMovimiento = async (req, res, next) => {
     const movimientoId = Types.ObjectId(req.params.movimientoId);
     const cat = req.body.categoria.split("-");
-    const fecha = moment(req.body.fecha, "DD-MM-YYYY").toDate();
+    const fecha = moment.utc(req.body.fecha, "DD-MM-YYYY").toDate();
 
     try {
         const categoria = await Categoria.findOne({ codigo: cat[0].trim() });

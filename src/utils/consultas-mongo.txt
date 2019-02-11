@@ -16,3 +16,7 @@ db.anos.aggregate([{$match: { ano: 2001 }},{$unwind: "$movimientos"},{$lookup: {
 
 
  const movimientotemp = await Ano.updateOne({ ano: parseInt(req.params.anoId), "movimientos._id": movimientoId }, {$set: {"movimientos.$.concepto": "conceptoeditado"}});
+
+ db.anos.update({ "ano": 2001},{ $pull: { "movimientos": {"_id": ObjectId("5c601905e4363b4adc20f0b6")}}})
+
+ db.anos.update({ "ano": 2001},{ $pull: { "movimientos": {"_id": ObjectId("5c601905e4363b4adc20f0b6")}}})

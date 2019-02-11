@@ -65,7 +65,7 @@ exports.postNewAno = (req, res, next) => {
                 saldoinicial: parseFloat(req.body.saldoinicial)
             });
             newAno.movimientos.push({
-                fecha: new Date(parseInt(req.body.ano), 0, 1),
+                fecha: new Date(Date.UTC(parseInt(req.body.ano), 0, 1)),
                 concepto: 'Incorporacion Remanente Año Anterior',
                 cantidad: parseFloat(req.body.saldoinicial),
                 categoria: remanenteId
