@@ -1,20 +1,28 @@
-<div class="card-deck">
+<div class="row">
     {{#each listaAnos}}
-    <div class="card text-center col-md-3 p-0">
-        <div class="card-header"><h3 class="card-title">Año {{ano}}</h3></div>
+    <div class="card text-center col-md-10 mx-auto mb-3">
         <div class="card-body">
-            
-            <a href="/movimientos/{{ano}}" class="btn btn-primary btn-block btn-sm">Acceder</a>
-            <a href="/anos/edit/{{ano}}" class="btn btn-danger btn-block btn-sm">Editar</a>
+            <div class="row">
+                <div class="col-3 align-self-center">
+                    <h3 class="card-title">Año {{ano}}</h3>
+                    <a href="/movimientos/{{ano}}" class="btn btn-outline-primary btn-block btn-sm">Acceder</a>
+                    <a href="/anos/edit/{{ano}}" class="btn btn-outline-danger btn-block btn-sm">Editar</a>
+                </div>
+                <div class="col-9">
+                    <canvas id="graficoAno{{ano}}" class="graficos-resumen" width="100" height="60" data-ano="{{ano}}" aria-label="Grafico de Gastos"></canvas>
+                </div>
+            </div>
         </div>
     </div>
     {{/each}}
 
 
-    <div class="card text-center col-md-3 p-0">
-        <div class="card-header"><h3 class="card-title">Añadir Año</h3></div>
+    <div class="card text-center col-md-10 mx-auto">
+        <div class="card-header">
+            <h3 class="card-title">Añadir Año</h3>
+        </div>
         <div class="card-body">
-            
+
             <a href="/anos/new" class=""><i class="fas fa-3x fa-plus-circle"></i></a>
         </div>
     </div>

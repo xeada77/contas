@@ -149,4 +149,107 @@
                 });
             });
     }
+
+    //var graficoAnoCanvas = $("#graficoAno2018");
+
+    let canvasGraficos = $(".graficos-resumen");
+    let anos = [];
+    let graficos = [];
+
+    for (let i = 0; i < canvasGraficos.length; i++) {
+        anos.push(canvasGraficos[i].attributes["data-ano"].value);
+    }
+
+    console.log(anos);
+
+    if (true) {
+        anos.forEach(ano => {
+            var ctx = document
+                .getElementById("graficoAno" + ano)
+                .getContext("2d");
+            //var ano = graficoAnoCanvas.data("ano");
+
+            fetch(url + ano)
+                .then(res => {
+                    return res.json();
+                })
+                .then(data => {
+                    console.log(data);
+
+                    let labelsAno = [
+                        "Enero",
+                        "Febrero",
+                        "Marzo",
+                        "Abril",
+                        "Mayo",
+                        "Junio",
+                        "Julio",
+                        "Agosto",
+                        "Septiembre",
+                        "Octubre",
+                        "Noviembre",
+                        "Diciembre"
+                    ];
+                    let datasetAnoIngreso = new Array(12).fill(0);
+                    let datasetAnoGasto = new Array(12).fill(0);
+
+                    data.ingresoPorMes.forEach(doc => {
+                        datasetAnoIngreso[doc._id.mes - 1] = parseFloat(
+                            doc.total.$numberDecimal
+                        );
+                    });
+
+                    data.gastoPorMes.forEach(doc => {
+                        datasetAnoGasto[doc._id.mes - 1] = parseFloat(
+                            doc.total.$numberDecimal
+                        );
+                    });
+
+                    var anoChart = new Chart(ctx, {
+                        type: "bar",
+                        data: {
+                            labels: labelsAno,
+                            datasets: [
+                                {
+                                    label: "Ingresos",
+                                    backgroundColor: "rgb(107, 232, 197)",
+                                    stack: "Stack 0",
+                                    data: datasetAnoIngreso
+                                },
+                                {
+                                    label: "Gastos",
+                                    backgroundColor: "rgb(214, 40, 57)",
+                                    stack: "Stack 1",
+                                    data: datasetAnoGasto
+                                }
+                            ]
+                        },
+                        options: {
+                            title: {
+                                display: true,
+                                text: "Resumen Gastos/Ingresos Año " + ano
+                            },
+                            tooltips: {
+                                mode: "index",
+                                intersect: false
+                            },
+                            responsive: true,
+                            scales: {
+                                xAxes: [
+                                    {
+                                        stacked: true
+                                    }
+                                ],
+                                yAxes: [
+                                    {
+                                        stacked: true
+                                    }
+                                ]
+                            }
+                        }
+                    });
+                    graficos.push(anoChart);
+                });
+        });
+    }
 })();

@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"contas-app.anos"},{"v":2,"unique":true,"key":{"ano":1},"name":"ano_1","ns":"contas-app.anos","background":true}],"uuid":"a50a106c32fa4b9a9c7674e029ae25c3"}
