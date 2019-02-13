@@ -1,13 +1,19 @@
 <div class="table-responsive">
     <table class="table table-striped table-bordered table-sm movimientos">
-        <thead class="thead-dark text-center">
+            <colgroup>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            </colgroup>
+            <thead class="thead-dark text-center">
             <tr>
-                <th class="col-auto" scope="col">Fecha</th>
-                <th class="col-6" scope="col">Concepto</th>
-                <th class="col-2" scope="col">Cantidad</th>
-                <th class="col-2" scope="col">Código Categoria</th>
-                <th class="col-1" scope="col"></th>
-
+                <th class="" scope="col">Fecha</th>
+                <th class="d-none d-lg-table-cell" scope="col">Concepto</th>
+                <th class="px-2" scope="col">Cantidad</th>
+                <th class="" scope="col">Código<br>Categoria</th>
+                <th class="" scope="col"></th>
             </tr>
         </thead>
         <tbody id="cuerpotabla">
@@ -16,7 +22,7 @@
             {{#if ../ingresos}}{{#if categoria.ingreso}}
             <tr>
                 <td class="text-center">{{formateaFecha fecha}}</td>
-                <td>{{concepto}}</td>
+                <td class="d-none d-lg-table-cell">{{concepto}}</td>
                 <td {{#unless categoria.ingreso}} class="text-left text-danger" {{else}} class="text-right text-success"
                     {{/unless}}>{{cantidad}}€</td>
                 <td class="text-center">{{categoria.codigo}}</td>
@@ -31,7 +37,7 @@
             {{else}}{{#unless categoria.ingreso}}
             <tr>
                 <td class="text-center">{{formateaFecha fecha}}</td>
-                <td>{{concepto}}</td>
+                <td class="d-none d-lg-table-cell">{{concepto}}</td>
                 <td {{#unless categoria.ingreso}} class="text-left text-danger" {{else}} class="text-right text-success"
                     {{/unless}}>{{cantidad}}€</td>
                 <td class="text-center">{{categoria.codigo}}</td>
@@ -49,12 +55,12 @@
             {{#each movimientos}}
             <tr>
                 <td class="text-center">{{formateaFecha fecha}}</td>
-                <td>{{concepto}}</td>
+                <td class="d-none d-lg-table-cell">{{concepto}}</td>
                 <td {{#unless categoria.ingreso}} class="text-left text-danger" {{else}} class="text-right text-success"
                     {{/unless}}>{{cantidad}}€</td>
                 <td class="text-center">{{categoria.codigo}}</td>
                 <td class="text-center"><a href="/movimientos/{{../ano.ano}}/edit/{{id}}">
-                        <span>
+                        <span class="px-2">
                             <i class="fas fa-edit text-primary"></i>
                         </span>
                     </a>

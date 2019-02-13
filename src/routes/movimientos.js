@@ -31,4 +31,9 @@ router.put(
     movimientosController.putEditMovimiento
 );
 
+router.delete(
+    '/movimientos/:anoId/delete/:movimientoId',
+    movimientosController.deleteMovimiento
+);
+
 module.exports = router;

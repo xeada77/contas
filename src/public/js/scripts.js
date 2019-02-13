@@ -1,4 +1,3 @@
-var cerrado = true;
 
 // Helper para limpiar el formulario de movimientos y remover clases de validacion
 const limpiarFormulario = () => {
@@ -23,7 +22,7 @@ const limpiarFormulario = () => {
 // Datepicker
 $(function() {
     const fecha = $("#guardar-movimiento").data("fecha");
-    if (fecha !== undefined) {
+    if (fecha) {
         const adata = fecha.split("/");
         const gg = parseInt(adata[0], 10);
         const mm = parseInt(adata[1], 10);
@@ -41,7 +40,7 @@ $(function() {
 $(document).ready(function () {
     const fecha = $("#guardar-movimiento").data("fecha");
     let ano;
-    if (fecha !== undefined) {
+    if (fecha) {
         const adata = fecha.split("/");
         ano = parseInt(adata[2], 10);
     }

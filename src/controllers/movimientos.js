@@ -21,6 +21,8 @@ exports.getDatosMovimientos = async (req, res, next) => {
     }
 };
 
+
+
 exports.getMovimientos = async (req, res, next) => {
     try {
         return res.render("anos/ano", {
@@ -148,7 +150,6 @@ exports.postAddMovimiento = async (req, res, next) => {
     try {
         const categoria = await Categoria.findById(categoriaId);
         const ano = await Ano.findById(anoId);
-        console.log(fecha);
         if (ano) {
             ano.movimientos.push({
                 fecha,
@@ -221,3 +222,27 @@ exports.putEditMovimiento = async (req, res, next) => {
         return res.redirect("/movimientos/" + req.params.anoId);
     }
 };
+
+exports.deleteMovimiento = async (req, res, next) => {
+    console.log(req.params);
+    const movimientoId = Types.ObjectId(req.params.movimientoId);
+    try {
+        await Ano.findOneAndUpdate(
+            { "ano": parseInt(req.params.anoId) },
+            { $pull: { "movimientos": { "_id": movimientoId } } }
+        );
+        req.flash(
+            "success_msg",
+            "El movimiento ha sido eliminado correctamente."
+        );
+        return res.redirect('/movimientos/' + req.params.anoId);
+        
+    } catch (error) {
+        console.log(error.message);
+        req.flash(
+            "errors_msg",
+            "Ha sucedido un error al intentar eliminar el movimiento."
+        );
+        return res.redirect('/movimientos/' + req.params.anoId);
+    }
+}

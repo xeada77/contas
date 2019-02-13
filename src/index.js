@@ -59,6 +59,7 @@ app.use((req, res, next) => {
 app.use(require('./routes/anos'));
 app.use(require('./routes/movimientos'));
 app.use(require('./routes/categorias'));
+app.use(require('./routes/api'));
 
 // Static Files
 app.use(express.static(path.join(__dirname, 'public')));

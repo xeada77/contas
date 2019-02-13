@@ -6,11 +6,11 @@
                     Categorias
                 </a>
                 <ul class="collapse list-unstyled {{seleccionaShow '/categorias' path}}" id="categoriasSubmenu">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/categorias">Todas las Categorias</a>
+                    <li class="nav-item ml-2">
+                        <a class="nav-link py-0" href="/categorias">Todas las Categorias</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/categorias/add">Añadir Categoria</a>
+                    <li class="nav-item ml-2">
+                        <a class="nav-link py-0" href="/categorias/add">Añadir Categoria</a>
                     </li>
             </ul>
             </li>
@@ -18,8 +18,8 @@
                 <a href="#movimientosSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link {{esActivo '/movimientos' path}}">Movimientos</a>
                 <ul class="collapse list-unstyled {{seleccionaShow '/movimientos' path}}" id="movimientosSubmenu">
                     {{#each listaAnos}}
-                    <li class="nav-item">
-                    <a class="nav-link" href="/movimientos/{{ano}}">{{ano}}</a>
+                    <li class="nav-item ml-2">
+                    <a class="nav-link py-0" href="/movimientos/{{ano}}">{{ano}}</a>
                     </li>
                     {{/each}}
             </ul>
@@ -27,8 +27,8 @@
             <li class="nav-item">
                 <a href="#anosSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link {{esActivo '/anos' path}}">Años</a>
                 <ul class="collapse list-unstyled {{seleccionaShow '/anos' path}}" id="anosSubmenu">
-                <li class="nav-item"><a class="nav-link"  href="/anos">Todos los Años</a></li>
-                <li class="nav-item"><a class="nav-link"  href="/anos/new">Añadir Año</a></li>
+                <li class="nav-item ml-2"><a class="nav-link py-0"  href="/anos">Todos los Años</a></li>
+                <li class="nav-item ml-2"><a class="nav-link py-0"  href="/anos/new">Añadir Año</a></li>
                 </ul>
             </li>
         </ul>

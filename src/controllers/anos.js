@@ -141,7 +141,7 @@ exports.putEditAno = async (req, res, next) => {
                 });
         })
         .catch(async errors => {
-            console.log(errors);
+            console.log(errors.message);
             //const ano = await Ano.findById(req.body.anoId);
             const validation = { ano: true, saldoinicial: true };
             errors.forEach(validationErr => {
@@ -167,9 +167,16 @@ exports.postDeleteAno = async (req, res, next) => {
     try {
         const ano = await Ano.findByIdAndRemove(req.body.anoId);
         //await Movimiento.deleteMany({ ano: ano._id });
+        req.flash(
+            "success_msg",
+            "El año " + ano.ano + " ha sido eliminado satisfactoriamente.");
         return res.redirect("/anos");
     } catch (error) {
-        console.log(error);
+        console.log(error.message);
+        req.flash(
+            "errors_msg",
+            "Ha sucedido un error al intentar eliminar el año."
+        );
         return res.redirect("/anos");
     }
 };

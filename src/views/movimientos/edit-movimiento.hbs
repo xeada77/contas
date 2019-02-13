@@ -1,3 +1,27 @@
+<div class="modal fade" id="eliminarModalConfirmacion" tabindex="-1" role="dialog" aria-labelledby="tituloModal"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="tituloModal">Eliminar Movimiento</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ¿Desea eliminar el movimiento?. Se eliminará este movimiento de la base de datos.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <form action="/movimientos/{{movimiento.anoId}}/delete/{{movimiento.id}}?_method=DELETE" method="POST">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit" class="btn btn-danger">Confirmar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="card w-100">
     <div class="card-header">
         <h3>Editar Movimiento</h3>
@@ -12,7 +36,7 @@
                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                         </div>
                         <input type="text" class="form-control datetimepicker-input" data-target="#seleccionfecha"
-                            placeholder="Fecha" id="fecha" name="fecha"/>
+                            placeholder="Fecha" id="fecha" name="fecha" />
 
                     </div>
                 </div>
@@ -20,7 +44,8 @@
                     <label for="concepto">Concepto</label>
                     <div class="input-group">
                         <div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-receipt"></i></span></div>
-                        <input type="text" class="form-control" id="concepto" placeholder="Concepto" name="concepto" value="{{movimiento.concepto}}">
+                        <input type="text" class="form-control" id="concepto" placeholder="Concepto" name="concepto"
+                            value="{{movimiento.concepto}}">
 
                     </div>
                 </div>
@@ -31,7 +56,8 @@
                             <span class="input-group-text">€</span>
                             <span class="input-group-text">0.00</span>
                         </div>
-                        <input type="text" class="form-control" id="cantidad" placeholder="Cantidad" name="cantidad" value="{{movimiento.cantidad}}">
+                        <input type="text" class="form-control" id="cantidad" placeholder="Cantidad" name="cantidad"
+                            value="{{movimiento.cantidad}}">
 
                     </div>
                 </div>
@@ -46,7 +72,7 @@
                         {{#if movimiento.categoriaId}}
                         <option class="opciones" data-id="{{movimiento.categoriaId}}">
                             {{movimiento.categoriaCodigo}} - {{movimiento.categoriaNombre}}
-                            </option>
+                        </option>
                         {{else}}
                         <option selected disabled>Elegir...</option>
                         {{/if}}
@@ -71,9 +97,14 @@
             </div>
             <input type="hidden" name="_method" value="PUT">
             <div class="form-row mt-4 justify-content-end">
-                <button type="button" class="btn btn-danger " id="limpiar-movimiento">Limpiar</button>
-                <button type="submit" class="btn btn-primary ml-2" id="guardar-movimiento" data-id="{{ano._id}}"
-                    data-fecha="{{formateaFecha movimiento.fecha}}">Editar</button>
+                <div class="form-group d-flex  justify-content-end">
+                    <button type="button" class="btn btn-danger" id="eliminar-movimiento" data-toggle="modal"
+                        data-target="#eliminarModalConfirmacion">Eliminar Movimiento</button>
+                </div>
+                <div class="form-group d-flex justify-content-end ml-2">
+                    <button type="submit" class="btn btn-primary" id="guardar-movimiento" data-id="{{ano._id}}"
+                        data-fecha="{{formateaFecha movimiento.fecha}}">Editar Movimiento</button>
+                </div>
             </div>
         </form>
     </div>

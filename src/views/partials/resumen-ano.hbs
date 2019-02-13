@@ -1,14 +1,12 @@
-  
-    <div class="d-flex justify-content-between align-items-center py-2">
-            <h2>
-                Resumen
-                <small class="text-muted">Año {{ano.ano}}</small>
-            </h2>
-    </div>
-
+<div class="d-flex justify-content-between align-items-center py-2">
+    <h2>
+        Resumen
+        <small class="text-muted">Año {{ano.ano}}</small>
+    </h2>
+</div>
 <div class="card-deck text-center mb-3" id="resumenCards">
     <div class="card border-info">
-        <div class="card-header bg-white">
+        <div class="card-header bg-light">
             <h5 class="card-title">Saldo Inicial</h5>
         </div>
         <div class="card-body">
@@ -16,9 +14,9 @@
         </div>
     </div>
     <div class="card border-success">
-        <a href="/movimientos/{{ano.ano}}/ingresos">
-            <div class="card-header bg-white">
-                <h5 class="card-title ">Total Ingresos</h5>
+        <a class=" text-decoration-none" href="/movimientos/{{ano.ano}}/ingresos">
+            <div class="card-header bg-light">
+                <h5 class="card-title text-body">Total Ingresos</h5>
             </div>
             <div class="card-body">
 
@@ -28,9 +26,9 @@
         </a>
     </div>
     <div class="card border-danger">
-        <a href="/movimientos/{{ano.ano}}/gastos">
-            <div class="card-header bg-white">
-                <h5 class="card-title ">Total Gastos</h5>
+        <a class="text-decoration-none" href="/movimientos/{{ano.ano}}/gastos">
+            <div class="card-header bg-light">
+                <h5 class="card-title text-body">Total Gastos</h5>
             </div>
             <div class="card-body">
                 <p class="card-text text-danger" id="resumenTotalGastos">{{#if
@@ -40,7 +38,7 @@
     </div>
 
     <div class="card border-info">
-        <div class="card-header bg-white">
+        <div class="card-header bg-light">
             <h5 class="card-title">Saldo Actual</h5>
         </div>
         <div class="card-body">
@@ -48,4 +46,12 @@
                 resumen.saldoActual}}{{resumen.saldoActual}}{{else}}0{{/if}} €</p>
         </div>
     </div>
+</div>
+<div class="row mb-2">
+    <div class="col-md-6">
+        <canvas id="myChart" width="100" height="70" data-ano="{{ano.ano}}" aria-label="Grafico de Gastos"></canvas>
+    </div>
+    <div class="col-md-6">
+        <canvas id="graficoDos" width="100" height="70" data-ano="{{ano.ano}}" aria-label="Grafico de Ingresos"></canvas>
+    </div>     
 </div>
