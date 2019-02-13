@@ -3,13 +3,18 @@
     var elementoDos = document.getElementById("graficoDos");
 
     const url = "http://localhost:3005/api/data/";
+    const options = {
+        method: "GET",
+        mode: "cors",
+        cache: "default"
+    };
 
     if (elementoDos && elemento) {
         var ctxIngreso = elementoDos.getContext("2d");
         var ctxGasto = elemento.getContext("2d");
         var ano = $("#myChart").data("ano");
 
-        fetch(url + ano)
+        fetch(url + ano,options)
             .then(res => {
                 return res.json();
             })
@@ -169,7 +174,7 @@
                 .getContext("2d");
             //var ano = graficoAnoCanvas.data("ano");
 
-            fetch(url + ano)
+            fetch(url + ano, options)
                 .then(res => {
                     return res.json();
                 })
