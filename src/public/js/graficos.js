@@ -9,7 +9,7 @@
     }
     
 
-    const url = "http://localhost:3005/api/data/";
+    const url = "/api/data/";
     const options = {
         method: "GET",
         mode: "cors",
