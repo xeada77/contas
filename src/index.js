@@ -6,6 +6,7 @@ const expvalidator = require('express-validator');
 const session = require('express-session');
 const flash = require('connect-flash');
 const methodOverride = require('method-override');
+const cors = require('cors');
 
 const customValidators = require('./utils/custom-validators');
 
@@ -42,11 +43,7 @@ app.use(session({
 app.use(flash());
 
 // enable cors
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-  });
+app.use(cors());
 
 
 // Global Variables

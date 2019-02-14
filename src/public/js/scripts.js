@@ -1,3 +1,4 @@
+var eventoActualiza = new Event('actualizado', { bubbles: true });
 
 // Helper para limpiar el formulario de movimientos y remover clases de validacion
 const limpiarFormulario = () => {
@@ -68,7 +69,6 @@ $(document).ready(function () {
     $.validator.addMethod(
         "datePerso",
         function(value, element, param) {
-            console.log("param", param);
 
             var check = false,
                 re = /^\d{1,2}\/\d{1,2}\/\d{4}$/,
@@ -83,7 +83,6 @@ $(document).ready(function () {
                 mm = parseInt(adata[1], 10);
                 aaaa = parseInt(adata[2], 10);
                 xdata = new Date(Date.UTC(aaaa, mm - 1, gg, 12, 0, 0, 0));
-                console.log(param === aaaa);
                 if (
                     xdata.getUTCFullYear() === aaaa &&
                     xdata.getUTCMonth() === mm - 1 &&
@@ -171,7 +170,9 @@ $(document).ready(function () {
 
             $.post("/movimientos/" + data.ano + "/addmovimiento", data).done(
                 dt => {
-                    console.log(dt);
+
+                    var eventoActualiza = new Event('actualizado', { bubbles: true });
+                    //console.log(dt);
                     const claseCantidad = dt.esIngreso
                         ? 'class="text-right text-success"'
                         : 'class="text-left text-danger"';
@@ -204,6 +205,8 @@ $(document).ready(function () {
                         dt.resumen.totalGastos + " €"
                     );
                     $(html).appendTo("#cuerpotabla");
+
+                    document.getElementById('myChart').dispatchEvent(eventoActualiza);
                 }
             );
         }
@@ -258,7 +261,7 @@ $(document).ready(function () {
                 .removeClass("is-invalid");
         },
         submitHandler: function () {
-            console.log('validado');
+            //console.log('validado');
             return true;
         }
     });
