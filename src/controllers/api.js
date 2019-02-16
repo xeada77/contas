@@ -14,8 +14,13 @@ exports.getApiData = async (req, res, next) => {
                     as: "categoria_doc"
                 }
             },
-            { $unwind: "$categoria_doc" },
-            { $match: { "categoria_doc.ingreso": true } },
+            { $unwind: "$categoria_doc" },{
+                $match:
+                {
+                    "categoria_doc.ingreso": true,
+                    "categoria_doc.codigo": { $not: { $eq: 'a.8'} }
+                }
+            },
             {
                 $group: {
                     _id: {
@@ -64,7 +69,13 @@ exports.getApiData = async (req, res, next) => {
                 }
                 },
                 { $unwind: "$categoria_doc" },
-                { $match: { "categoria_doc.ingreso": true } },
+                {
+                    $match:
+                    {
+                        "categoria_doc.ingreso": true,
+                        "categoria_doc.codigo": { $not: { $eq: 'a.8'} }
+                    }
+                },
                 {
                     $group: {
                         _id: {mes : {$month: "$movimientos.fecha"}},

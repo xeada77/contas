@@ -206,7 +206,7 @@ $(document).ready(function () {
                     );
                     $(html).appendTo("#cuerpotabla");
 
-                    document.getElementById('myChart').dispatchEvent(eventoActualiza);
+                    document.getElementById('graficoGastosCat').dispatchEvent(eventoActualiza);
                 }
             );
         }

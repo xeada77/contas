@@ -39,7 +39,8 @@ exports.getMovimientos = async (req, res, next) => {
                 totalIngresos: res.locals.datos.totalIngresos,
                 totalGastos: res.locals.datos.totalGastos
             },
-            path: "/movimientos"
+            path: "/movimientos",
+            detalleMovimientos: false,
         });
     } catch (error) {
         console.log(error.message);

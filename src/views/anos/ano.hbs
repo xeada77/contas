@@ -1,16 +1,33 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <div class="btn-toolbar mb-2 mb-md-0 dropdown">
+        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span><i class="fab fa-whmcs"></i></span>
+            Acciones
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <a class="dropdown-item" href="#">Something else here</a>
+        </div>
+    </div>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group mr-2">
+            <button class="btn btn-sm btn-outline-secondary">1º Trimestre</button>
+            <button class="btn btn-sm btn-outline-secondary">2º Trimestre</button>
+            <button class="btn btn-sm btn-outline-secondary">3º Trimestre</button>
+        </div>
+        
+    </div>
+</div>
+
 {{>resumen-ano}}
 
-<div class="d-flex justify-content-between align-items-center py-2">
-    <div>
-    <h2>
-        Movimientos
-        <small class="text-muted">Año {{ano.ano}}</small>
-    </h2>
-    </div>
-    <div class="btn-group" role="group" aria-label="Basic example">
-        <a href="#" type="button" class="btn btn-sm btn-outline-secondary" role="button">1º Trimestre</a>
-        <a href="#" type="button" class="btn btn-sm btn-outline-secondary">2º Trimestre</a>
-        <a href="#" type="button" class="btn btn-sm btn-outline-secondary">3º Trimestre</a>
+<div class="row d-flex justify-content-between align-items-center p-3">
+    <div class="col-xs-12">
+        <h2>
+            Movimientos
+            <small class="text-muted">Año {{ano.ano}}</small>
+        </h2>
     </div>
 </div>
 

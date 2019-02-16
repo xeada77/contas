@@ -1,18 +1,13 @@
-(async function() {
-    async function fetchAsync(url) {
-        // await response of fetch call
-        let response = await fetch(url);
-        // only proceed once promise is resolved
-        let data = await response.json();
-        // only proceed once second promise is resolved
-        return data;
-    }
+(function() {
+    var graficoIngresosCanvas = document.getElementById("graficoIngresosCat");
+    var graficoGastosCanvas = document.getElementById("graficoGastosCat");
 
     function addData(chart, labels, data) {
         chart.data.labels = labels;
         chart.data.datasets[0].data = data
         chart.update();
     }
+    
 
     const url = "/api/data/";
     const options = {
@@ -20,69 +15,41 @@
         mode: "cors",
         cache: "default"
     };
-    var graficoIngresosCanvas = document.getElementById("graficoIngresosCat");
-    var graficoGastosCanvas = document.getElementById("graficoGastosCat");
-    let canvasGraficos = $(".graficos-resumen");
-    
 
     if (graficoIngresosCanvas && graficoGastosCanvas) {
-
-        graficoGastosCanvas.addEventListener("actualizado", async function() {
-            let nuevasLabelsGasto = [];
-            let nuevosdatasetGasto = [];
-            let nuevasLabelsIngreso = [];
-            let nuevosdatasetIngreso = [];
-
-            const data = await fetchAsync(url + ano);
-
-            data.gastoPorCategoria.forEach(doc => {
-                nuevasLabelsGasto.push(doc._id.nombre);
-                nuevosdatasetGasto.push(
-                    parseFloat(doc.total.$numberDecimal)
-                );
-            });
-
-            data.ingresoPorCategoria.forEach(doc => {
-                nuevasLabelsIngreso.push(doc._id.nombre);
-                nuevosdatasetIngreso.push(
-                    parseFloat(doc.total.$numberDecimal)
-                );
-            });
-
-            addData(gastoChart, nuevasLabelsGasto, nuevosdatasetGasto);
-            addData(ingresoChart, nuevasLabelsIngreso, nuevosdatasetIngreso);
-
-                    /*gastoChart.data.labels = nuevasLabelsGasto;
-                    gastoChart.data.datasets[0].data = nuevosdatasetGasto;
-                    gastoChart.update();*/
-        });
-
         var ctxIngreso = graficoIngresosCanvas.getContext("2d");
         var ctxGasto = graficoGastosCanvas.getContext("2d");
         var ano = $("#graficoGastosCat").data("ano");
         var gastoChart;
         var ingresoChart;
 
-        let labelsIngreso = [];
-        let datasetIngreso = [];
-        let labelsGasto = [];
-        let datasetGasto = [];
+        fetch(url + ano, options)
+            .then(res => {
+                return res.json();
+            })
+            .then(data => {
+                //console.log(data);
 
-        const data = await fetchAsync(url + ano);
+                let labelsIngreso = [];
+                let datasetIngreso = [];
+                let labelsGasto = [];
+                let datasetGasto = [];
 
-        data.ingresoPorCategoria.forEach(doc => {
+                data.ingresoPorCategoria.forEach(doc => {
+                    
                     labelsIngreso.push(doc._id.nombre);
                     datasetIngreso.push(
                         parseFloat(doc.total.$numberDecimal)
-                    );                    
-        });
+                    );
+                    
+                });
 
-        data.gastoPorCategoria.forEach(doc => {
+                data.gastoPorCategoria.forEach(doc => {
                     labelsGasto.push(doc._id.nombre);
                     datasetGasto.push(parseFloat(doc.total.$numberDecimal));
-        });
+                });
 
-        ingresoChart = new Chart(ctxIngreso, {
+                ingresoChart = new Chart(ctxIngreso, {
                     type: "doughnut",
                     data: {
                         labels: labelsIngreso,
@@ -136,9 +103,9 @@
                             text: "Ingresos por Categoria"
                         }
                     }
-        });
+                });
 
-        gastoChart = new Chart(ctxGasto, {
+                gastoChart = new Chart(ctxGasto, {
                     type: "doughnut",
                     data: {
                         labels: labelsGasto,
@@ -192,57 +159,102 @@
                             text: "Gastos por Categoria"
                         }
                     }
+                });
+            });
+
+        graficoGastosCanvas.addEventListener("actualizado", function() {
+            let nuevasLabelsGasto = [];
+            let nuevosdatasetGasto = [];
+            let nuevasLabelsIngreso = [];
+            let nuevosdatasetIngreso = [];
+
+            fetch(url + ano, options)
+                .then(res => {
+                    return res.json();
+                })
+                .then(data => {
+                    //console.log(data);
+
+                    data.gastoPorCategoria.forEach(doc => {
+                        nuevasLabelsGasto.push(doc._id.nombre);
+                        nuevosdatasetGasto.push(
+                            parseFloat(doc.total.$numberDecimal)
+                        );
+                    });
+
+                    data.ingresoPorCategoria.forEach(doc => {
+                        if (doc._id.codigo !== "a.8") {
+                            nuevasLabelsIngreso.push(doc._id.nombre);
+                            nuevosdatasetIngreso.push(
+                                parseFloat(doc.total.$numberDecimal)
+                            );
+                        }
+                    });
+
+                    addData(gastoChart, nuevasLabelsGasto, nuevosdatasetGasto);
+                    addData(ingresoChart, nuevasLabelsIngreso, nuevosdatasetIngreso);
+
+                    /*gastoChart.data.labels = nuevasLabelsGasto;
+                    gastoChart.data.datasets[0].data = nuevosdatasetGasto;
+                    gastoChart.update();*/
+                });
         });
-        
     }
 
-    if (canvasGraficos) {
-        let anos = [];
-        let graficos = [];
+    //var graficoAnoCanvas = $("#graficoAno2018");
 
-        for (let i = 0; i < canvasGraficos.length; i++) {
-            anos.push(canvasGraficos[i].attributes["data-ano"].value);
-        }
-        
-        anos.forEach(async (ano) => {
+    let canvasGraficos = $(".graficos-resumen");
+    let anos = [];
+    let graficos = [];
 
+    for (let i = 0; i < canvasGraficos.length; i++) {
+        anos.push(canvasGraficos[i].attributes["data-ano"].value);
+    }
+
+    if (true) {
+        anos.forEach(ano => {
             var ctx = document
                 .getElementById("graficoAno" + ano)
                 .getContext("2d");
             //var ano = graficoAnoCanvas.data("ano");
 
-            let labelsAno = [
-                "Enero",
-                "Febrero",
-                "Marzo",
-                "Abril",
-                "Mayo",
-                "Junio",
-                "Julio",
-                "Agosto",
-                "Septiembre",
-                "Octubre",
-                "Noviembre",
-                "Diciembre"
-            ];
-            let datasetAnoIngreso = new Array(12).fill(0);
-            let datasetAnoGasto = new Array(12).fill(0);
+            fetch(url + ano, options)
+                .then(res => {
+                    return res.json();
+                })
+                .then(data => {
+                    console.log(data);
 
-            const data = await fetchAsync(url + ano);
+                    let labelsAno = [
+                        "Enero",
+                        "Febrero",
+                        "Marzo",
+                        "Abril",
+                        "Mayo",
+                        "Junio",
+                        "Julio",
+                        "Agosto",
+                        "Septiembre",
+                        "Octubre",
+                        "Noviembre",
+                        "Diciembre"
+                    ];
+                    let datasetAnoIngreso = new Array(12).fill(0);
+                    let datasetAnoGasto = new Array(12).fill(0);
 
-            data.ingresoPorMes.forEach(doc => {
-                datasetAnoIngreso[doc._id.mes - 1] = parseFloat(
-                doc.total.$numberDecimal
-                );
-            });
+                    data.ingresoPorMes.forEach(doc => {
+                        datasetAnoIngreso[doc._id.mes - 1] = parseFloat(
+                            doc.total.$numberDecimal
+                        );
+                    });
 
-            data.gastoPorMes.forEach(doc => {
-                datasetAnoGasto[doc._id.mes - 1] = parseFloat(
-                doc.total.$numberDecimal
-                );
-            });
+                    data.gastoPorMes.forEach(doc => {
+                        datasetAnoGasto[doc._id.mes - 1] = parseFloat(
+                            doc.total.$numberDecimal
+                        );
+                    });
 
-            var anoChart = new Chart(ctx, {
+                    var anoChart = new Chart(ctx, {
                         type: "bar",
                         data: {
                             labels: labelsAno,
@@ -284,10 +296,9 @@
                                 ]
                             }
                         }
-            });
-
-            graficos.push(anoChart);
+                    });
+                    graficos.push(anoChart);
+                });
         });
     }
-    
 })();
