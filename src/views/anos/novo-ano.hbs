@@ -27,7 +27,10 @@
             <div class="form-group">
                 <label for="saldoinicial">Saldo Inicial</label>
                 <div class="input-group">
-                    
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">€</span>
+                        <span class="input-group-text">0.00</span>
+                    </div>
                     {{#if ano}}
                     <input type="text" class="form-control {{#unless validation.saldoinicial}}is-invalid{{/unless}}"
                         name="saldoinicial" id="inputSaldo" value="{{ano.saldoinicial}}" placeholder="Saldo Inicial">
@@ -36,10 +39,7 @@
                     <input type="text" class="form-control" name="saldoinicial" id="inputSaldo" placeholder="Saldo Inicial">
 
                     {{/if}}
-                    <div class="input-group-append">
-                        <span class="input-group-text">€</span>
-                        <span class="input-group-text">0.00</span>
-                    </div>
+                    
                     {{#unless validation.saldoinicial}}
                     <div class="invalid-feedback">
                         Formato de saldo incorrecto.
@@ -51,10 +51,10 @@
             <button class="btn btn-primary btn-block" id="editarAno" type="button" data-id="{{ano._id}}">Editar</button>
             <button class="btn btn-danger btn-block" id="eliminarAno" type="button" data-id="{{ano.ano}}">Eliminar</button>
             {{else}}
-            <button class="btn btn-primary btn-block" type="submit" id="anadirAno">Añadir</button>
+            <button class="btn btn-outline-primary btn-block" type="submit" id="anadirAno">Añadir</button>
             {{/if}}
             {{else}}
-            <button class="btn btn-primary btn-block" type="submit" id="anadirAno">Añadir</button>
+            <button class="btn btn-outline-primary btn-block" type="submit" id="anadirAno">Añadir</button>
             {{/if}}
 
         </form>

@@ -7,16 +7,72 @@ const moment = require("moment");
 
 exports.getDatosMovimientos = async (req, res, next) => {
     try {
-        const ano = await Ano.findOne({ ano: req.params.anoId }).populate(
-            "movimientos.categoria"
-        );
+        const ano = await Ano.findOne({ ano: req.params.anoId });
+        if (!ano) {
+            throw new Error('No existe el año solicitado.')
+        }
+        let movimientos;
+        let detalleMovimientos = false;
+        let detalleIngresos = false;
+
+        if (req.params.trimestre) {
+            let dateMin, dateMax; 
+            if (req.params.trimestre == 'trimestre1') {
+                dateMin = new Date(Date.UTC(parseInt(req.params.anoId), 0, 1, 12, 0, 0, 0));
+                dateMax = new Date(Date.UTC(parseInt(req.params.anoId), 2, 31, 12, 0, 0, 0));
+                movimientos = await Ano.movimientosPorFecha(parseInt(req.params.anoId), dateMin, dateMax);
+            } else if (req.params.trimestre == 'trimestre2') {
+                dateMin = new Date(Date.UTC(parseInt(req.params.anoId), 3, 1, 12, 0, 0, 0));
+                dateMax = new Date(Date.UTC(parseInt(req.params.anoId), 5, 30, 12, 0, 0, 0));
+                movimientos = await Ano.movimientosPorFecha(parseInt(req.params.anoId), dateMin, dateMax);
+            } else if (req.params.trimestre == 'trimestre3') {
+                dateMin = new Date(Date.UTC(parseInt(req.params.anoId), 6, 1, 12, 0, 0, 0));
+                dateMax = new Date(Date.UTC(parseInt(req.params.anoId), 11, 31, 12, 0, 0, 0));
+                movimientos = await Ano.movimientosPorFecha(parseInt(req.params.anoId), dateMin, dateMax);
+            } else if (req.params.trimestre == 'gastos') {
+                movimientos = await Ano.movimientosGastos(parseInt(req.params.anoId));
+            } else if (req.params.trimestre == 'ingresos') {
+                movimientos = await Ano.movimientosIngresos(parseInt(req.params.anoId));
+                detalleIngresos = true;
+            }
+            else {
+                throw new Error('No existe la ruta');
+            }
+            detalleMovimientos = true;
+        } else {  
+            movimientos = await Ano.aggregate([
+                { $match: { ano: parseInt(req.params.anoId) } },
+                { $unwind: "$movimientos" },
+                {
+                    $lookup: {
+                        from: "categorias",
+                        localField: "movimientos.categoria",
+                        foreignField: "_id",
+                        as: "categoria_doc"
+                    }
+                },
+                { $unwind: "$categoria_doc" },
+                { $sort: { "movimientos.fecha": 1 } }
+            ]);
+        }
         const totalIngresos = await Ano.totalIngresos(req.params.anoId);
         const totalGastos = await Ano.totalGastos(req.params.anoId);
-        res.locals.datos = { ano, totalIngresos, totalGastos };
+        res.locals.datos = {
+            ano: {
+                id: ano._id,
+                ano: ano.ano,
+                saldoinicial: ano.saldoinicial
+            },
+            movimientos,
+            totalIngresos,
+            totalGastos,
+            detalleMovimientos,
+            detalleIngresos
+        };
         return next();
     } catch (error) {
         console.log(error.message);
-        req.flash("errors_msg", "Ha Sucedido Un Error Middle.");
+        req.flash("errors_msg", error.message);
         return res.redirect("/anos");
     }
 };
@@ -24,10 +80,13 @@ exports.getDatosMovimientos = async (req, res, next) => {
 
 
 exports.getMovimientos = async (req, res, next) => {
+
+    //console.log(res.locals.datos.movimientos);
     try {
         return res.render("anos/ano", {
             ano: res.locals.datos.ano,
-            movimientos: res.locals.datos.ano.movimientos,
+            saldoInicial: res.locals.datos.ano.saldoinicial.toString(),
+            movimientos: res.locals.datos.movimientos,
             listaAnos: await helpers.listaAnos(),
             categorias: await helpers.listaCategorias(),
             resumen: {
@@ -40,7 +99,8 @@ exports.getMovimientos = async (req, res, next) => {
                 totalGastos: res.locals.datos.totalGastos
             },
             path: "/movimientos",
-            detalleMovimientos: false,
+            detalleMovimientos: res.locals.datos.detalleMovimientos,
+            detalleIngresos: res.locals.datos.detalleIngresos
         });
     } catch (error) {
         console.log(error.message);
@@ -49,59 +109,7 @@ exports.getMovimientos = async (req, res, next) => {
     }
 };
 
-exports.getMovimientosIngresos = async (req, res, next) => {
-    try {
-        return res.render("movimientos/ingresos-gastos", {
-            ano: res.locals.datos.ano,
-            movimientos: res.locals.datos.ano.movimientos,
-            listaAnos: await helpers.listaAnos(),
-            categorias: await helpers.listaCategorias(),
-            resumen: {
-                saldoActual: utils.obtenSaldo(
-                    res.locals.datos.ano.saldoinicial.toString(),
-                    res.locals.datos.totalIngresos,
-                    res.locals.datos.totalGastos
-                ),
-                totalIngresos: res.locals.datos.totalIngresos,
-                totalGastos: res.locals.datos.totalGastos
-            },
-            path: "/movimientos",
-            detalleMovimientos: true,
-            ingresos: true
-        });
-    } catch (error) {
-        console.log(error.message);
-        req.flash("errors_msg", "Ha Sucedido Un Error");
-        return res.redirect("/anos");
-    }
-};
 
-exports.getMovimientosGastos = async (req, res, next) => {
-    try {
-        return res.render("movimientos/ingresos-gastos", {
-            ano: res.locals.datos.ano,
-            movimientos: res.locals.datos.ano.movimientos,
-            listaAnos: await helpers.listaAnos(),
-            categorias: await helpers.listaCategorias(),
-            resumen: {
-                saldoActual: utils.obtenSaldo(
-                    res.locals.datos.ano.saldoinicial.toString(),
-                    res.locals.datos.totalIngresos,
-                    res.locals.datos.totalGastos
-                ),
-                totalIngresos: res.locals.datos.totalIngresos,
-                totalGastos: res.locals.datos.totalGastos
-            },
-            path: "/movimientos",
-            detalleMovimientos: true,
-            ingresos: false
-        });
-    } catch (error) {
-        console.log(error.message);
-        req.flash("errors_msg", "Ha Sucedido Un Error");
-        return res.redirect("/anos");
-    }
-};
 
 exports.getEditMovimiento = async (req, res, next) => {
     const movimientoId = Types.ObjectId(req.params.movimientoId);

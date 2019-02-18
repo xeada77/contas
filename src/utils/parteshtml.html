@@ -1,0 +1,111 @@
+
+                <!--
+            {{#if detalleMovimientos}}
+                {{#each movimientos}}
+                {{#if ../ingresos}}
+                    {{#if categoria_doc.ingreso}}
+                    <tr>
+                        <td class="text-center">{{formateaFecha movimientos.fecha}}</td>
+                        <td class="d-none d-lg-table-cell">{{movimientos.concepto}}</td>
+                        <td {{#unless categoria_doc.ingreso}} class="text-left text-danger" {{else}} class="text-right text-success"
+                            {{/unless}}>{{movimientos.cantidad}}€</td>
+                        <td class="text-center">{{categoria_doc.codigo}}</td>
+                        <td class="text-center"><a href="/movimientos/{{../ano.ano}}/edit/{{movimientos._id}}">
+                                <span>
+                                    <i class="fas fa-edit text-primary"></i>
+                                </span>
+                            </a>
+                        </td>
+                    </tr>
+                    {{/if}}
+                {{else}}
+                    {{#unless categoria_doc.ingreso}}
+                    <tr>
+                        <td class="text-center">{{formateaFecha movimientos.fecha}}</td>
+                        <td class="d-none d-lg-table-cell">{{movimientos.concepto}}</td>
+                        <td {{#unless categoria_doc.ingreso}} class="text-left text-danger" {{else}} class="text-right text-success"
+                            {{/unless}}>{{movimientos.cantidad}}€</td>
+                        <td class="text-center">{{categoria_doc.codigo}}</td>
+                        <td class="text-center"><a href="/movimientos/{{../ano.ano}}/edit/{{movimientos._id}}">
+                                <span>
+                                    <i class="fas fa-edit text-primary"></i>
+                                </span>
+                            </a>
+                        </td>
+                    </tr>
+                    {{/unless}}
+                {{/if}}
+                {{/each}}
+            {{else}}-->
+                
+            <!--{{/if}}-->
+
+Funciones desechadas
+
+exports.getMovimientosIngresos = async (req, res, next) => {
+    try {
+        return res.render("movimientos/ingresos-gastos", {
+            ano: res.locals.datos.ano,
+            saldoInicial: res.locals.datos.ano.saldoinicial.toString(),
+            movimientos: res.locals.datos.movimientos,
+            listaAnos: await helpers.listaAnos(),
+            categorias: await helpers.listaCategorias(),
+            resumen: {
+                saldoActual: utils.obtenSaldo(
+                    res.locals.datos.ano.saldoinicial.toString(),
+                    res.locals.datos.totalIngresos,
+                    res.locals.datos.totalGastos
+                ),
+                totalIngresos: res.locals.datos.totalIngresos,
+                totalGastos: res.locals.datos.totalGastos
+            },
+            path: "/movimientos",
+            detalleMovimientos: true,
+            ingresos: true
+        });
+    } catch (error) {
+        console.log(error.message);
+        req.flash("errors_msg", "Ha Sucedido Un Error");
+        return res.redirect("/anos");
+    }
+};
+
+exports.getMovimientosGastos = async (req, res, next) => {
+    try {
+        return res.render("movimientos/ingresos-gastos", {
+            ano: res.locals.datos.ano,
+            saldoInicial: res.locals.datos.ano.saldoinicial.toString(),
+            movimientos: res.locals.datos.movimientos,
+            listaAnos: await helpers.listaAnos(),
+            categorias: await helpers.listaCategorias(),
+            resumen: {
+                saldoActual: utils.obtenSaldo(
+                    res.locals.datos.ano.saldoinicial.toString(),
+                    res.locals.datos.totalIngresos,
+                    res.locals.datos.totalGastos
+                ),
+                totalIngresos: res.locals.datos.totalIngresos,
+                totalGastos: res.locals.datos.totalGastos
+            },
+            path: "/movimientos",
+            detalleMovimientos: true,
+            ingresos: false
+        });
+    } catch (error) {
+        console.log(error.message);
+        req.flash("errors_msg", "Ha Sucedido Un Error");
+        return res.redirect("/anos");
+    }
+};
+
+/*router.get(
+    "/movimientos/:anoId/ingresos",
+    movimientosController.getDatosMovimientos,
+    movimientosController.getMovimientosIngresos
+);*/
+
+/*router.get(
+    "/movimientos/:anoId/gastos",
+    movimientosController.getDatosMovimientos,
+    movimientosController.getMovimientosGastos
+);*/

@@ -98,4 +98,59 @@ anoSchema.statics.totalGastos = async function(ano) {
     return total;
 };
 
+anoSchema.statics.movimientosPorFecha = async function(ano, dateMin, dateMax) {
+    return await this.aggregate([
+        { $match: { ano: ano } },
+        { $unwind: "$movimientos" },
+        { $match: { "movimientos.fecha": { "$gte": dateMin, "$lte": dateMax } } },
+
+        {
+            $lookup: {
+                from: "categorias",
+                localField: "movimientos.categoria",
+                foreignField: "_id",
+                as: "categoria_doc"
+            }
+        },
+        { $unwind: "$categoria_doc" },
+        { $sort: { "movimientos.fecha": 1 } }
+    ]);
+}
+
+anoSchema.statics.movimientosGastos = async function (ano) {
+    return await this.aggregate([
+        { $match: { ano: parseInt(ano) } },
+        { $unwind: "$movimientos" },
+        {
+            $lookup: {
+                from: "categorias",
+                localField: "movimientos.categoria",
+                foreignField: "_id",
+                as: "categoria_doc"
+            }
+        },
+        { $unwind: "$categoria_doc" },
+        { $match: { "categoria_doc.ingreso": false } },
+        { $sort: { "movimientos.fecha": 1 } }
+    ]);
+}
+
+anoSchema.statics.movimientosIngresos = async function (ano) {
+    return await this.aggregate([
+        { $match: { ano: parseInt(ano) } },
+        { $unwind: "$movimientos" },
+        {
+            $lookup: {
+                from: "categorias",
+                localField: "movimientos.categoria",
+                foreignField: "_id",
+                as: "categoria_doc"
+            }
+        },
+        { $unwind: "$categoria_doc" },
+        { $match: { "categoria_doc.ingreso": true } },
+        { $sort: { "movimientos.fecha": 1 } }
+    ]);
+}
+
 module.exports = mongoose.model("Ano", anoSchema);

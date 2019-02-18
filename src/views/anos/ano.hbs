@@ -1,4 +1,4 @@
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-3 mb-3 border-bottom">
     <div class="btn-toolbar mb-2 mb-md-0 dropdown">
         <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span><i class="fab fa-whmcs"></i></span>
@@ -12,9 +12,9 @@
     </div>
     <div class="btn-toolbar mb-2 mb-md-0">
         <div class="btn-group mr-2">
-            <button class="btn btn-sm btn-outline-secondary">1º Trimestre</button>
-            <button class="btn btn-sm btn-outline-secondary">2º Trimestre</button>
-            <button class="btn btn-sm btn-outline-secondary">3º Trimestre</button>
+            <a href="/movimientos/{{ano.ano}}/trimestre1" class="btn btn-sm btn-outline-secondary">1º Trimestre</a>
+            <a href="/movimientos/{{ano.ano}}/trimestre2" class="btn btn-sm btn-outline-secondary active">2º Trimestre</a>
+            <a href="/movimientos/{{ano.ano}}/trimestre3" class="btn btn-sm btn-outline-secondary">3º Trimestre</a>
         </div>
         
     </div>
@@ -25,7 +25,13 @@
 <div class="row d-flex justify-content-between align-items-center p-3">
     <div class="col-xs-12">
         <h2>
-            Movimientos
+            {{#if detalleMovimientos}}
+                {{#if detalleIngresos}}
+                Ingresos
+                {{else}}
+                Gastos
+                {{/if}}
+            {{else}}Movimientos{{/if}}
             <small class="text-muted">Año {{ano.ano}}</small>
         </h2>
     </div>
@@ -34,7 +40,7 @@
 
 {{>tabla-movimientos}}
 
-
+{{#unless detalleMovimientos}}
 <div class="card w-100">
     <div class="card-header">
         <h3>Añadir Movimiento</h3>
@@ -102,9 +108,10 @@
             </div>
             <div class="form-row mt-4 justify-content-end">
                 <button type="button" class="btn btn-danger " id="limpiar-movimiento">Limpiar</button>
-                <button type="submit" class="btn btn-primary ml-2" id="guardar-movimiento" data-id="{{ano._id}}"
+                <button type="submit" class="btn btn-primary ml-2" id="guardar-movimiento" data-id="{{ano.id}}"
                     data-fecha="01/01/{{ano.ano}}">Guardar</button>
             </div>
         </form>
     </div>
 </div>
+{{/unless}}

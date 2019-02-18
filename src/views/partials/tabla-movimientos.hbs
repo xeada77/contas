@@ -17,51 +17,14 @@
             </tr>
         </thead>
         <tbody id="cuerpotabla">
-            {{#if detalleMovimientos}}
-                {{#each movimientos}}
-                {{#if ../ingresos}}
-                    {{#if categoria.ingreso}}
-                    <tr>
-                        <td class="text-center">{{formateaFecha fecha}}</td>
-                        <td class="d-none d-lg-table-cell">{{concepto}}</td>
-                        <td {{#unless categoria.ingreso}} class="text-left text-danger" {{else}} class="text-right text-success"
-                            {{/unless}}>{{cantidad}}€</td>
-                        <td class="text-center">{{categoria.codigo}}</td>
-                        <td class="text-center"><a href="/movimientos/{{../ano.ano}}/edit/{{id}}">
-                                <span>
-                                    <i class="fas fa-edit text-primary"></i>
-                                </span>
-                            </a>
-                        </td>
-                    </tr>
-                    {{/if}}
-                {{else}}
-                    {{#unless categoria.ingreso}}
-                    <tr>
-                        <td class="text-center">{{formateaFecha fecha}}</td>
-                        <td class="d-none d-lg-table-cell">{{concepto}}</td>
-                        <td {{#unless categoria.ingreso}} class="text-left text-danger" {{else}} class="text-right text-success"
-                            {{/unless}}>{{cantidad}}€</td>
-                        <td class="text-center">{{categoria.codigo}}</td>
-                        <td class="text-center"><a href="/movimientos/{{../ano.ano}}/edit/{{id}}">
-                                <span>
-                                    <i class="fas fa-edit text-primary"></i>
-                                </span>
-                            </a>
-                        </td>
-                    </tr>
-                    {{/unless}}
-                {{/if}}
-                {{/each}}
-            {{else}}
-                {{#each movimientos}}
+            {{#each movimientos}}
                 <tr>
-                    <td class="text-center">{{formateaFecha fecha}}</td>
-                    <td class="d-none d-lg-table-cell">{{concepto}}</td>
-                    <td {{#unless categoria.ingreso}} class="text-left text-danger" {{else}} class="text-right text-success"
-                        {{/unless}}>{{cantidad}}€</td>
-                    <td class="text-center">{{categoria.codigo}}</td>
-                    <td class="text-center"><a href="/movimientos/{{../ano.ano}}/edit/{{id}}">
+                    <td class="text-center">{{formateaFecha movimientos.fecha}}</td>
+                    <td class="d-none d-lg-table-cell">{{movimientos.concepto}}</td>
+                    <td {{#unless categoria_doc.ingreso}} class="text-left text-danger" {{else}} class="text-right text-success"
+                        {{/unless}}>{{movimientos.cantidad}}€</td>
+                    <td class="text-center">{{categoria_doc.codigo}}</td>
+                    <td class="text-center"><a href="/movimientos/{{../ano.ano}}/edit/{{movimientos._id}}">
                             <span class="px-2">
                                 <i class="fas fa-edit text-primary"></i>
                             </span>
@@ -69,7 +32,6 @@
                     </td>
                 </tr>
                 {{/each}}
-            {{/if}}
         </tbody>
     </table>
 </div>

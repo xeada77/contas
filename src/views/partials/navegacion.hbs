@@ -2,7 +2,7 @@
     <div class="sidebar-sticky">
         <ul class="nav flex-column">
             <li class="nav-item ">
-                <a href="#categoriasSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link {{esActivo '/categorias' path}}">
+                <a href="#categoriasSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link {{esActivo '/categorias' path}}"><span><i class="fas fa-sort-numeric-down"></i></span> 
                     Categorias
                 </a>
                 <ul class="collapse list-unstyled {{seleccionaShow '/categorias' path}}" id="categoriasSubmenu">
@@ -15,7 +15,7 @@
             </ul>
             </li>
             <li class="nav-item">
-                <a href="#movimientosSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link {{esActivo '/movimientos' path}}">Movimientos</a>
+                <a href="#movimientosSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link {{esActivo '/movimientos' path}}"><span><i class="far fa-list-alt"></i></span> Movimientos</a>
                 <ul class="collapse list-unstyled {{seleccionaShow '/movimientos' path}}" id="movimientosSubmenu">
                     {{#each listaAnos}}
                     <li class="nav-item ml-2">
@@ -25,7 +25,7 @@
             </ul>
             </li>
             <li class="nav-item">
-                <a href="#anosSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link {{esActivo '/anos' path}}">Años</a>
+                <a href="#anosSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link {{esActivo '/anos' path}}"><span><i class="fas fa-calendar-alt"></i></span> Años</a>
                 <ul class="collapse list-unstyled {{seleccionaShow '/anos' path}}" id="anosSubmenu">
                 <li class="nav-item ml-2"><a class="nav-link py-0"  href="/anos">Todos los Años</a></li>
                 <li class="nav-item ml-2"><a class="nav-link py-0"  href="/anos/new">Añadir Año</a></li>

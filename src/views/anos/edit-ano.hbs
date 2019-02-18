@@ -1,3 +1,29 @@
+<div class="modal fade" id="eliminarModalConfirmacion" tabindex="-1" role="dialog" aria-labelledby="tituloModal"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="tituloModal">Eliminar Año {{#if
+                    getAno}}{{getAno.ano}}{{else}}{{ano.ano}}{{/if}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ¿Desea eliminar el año {{#if getAno}}{{getAno.ano}}{{else}}{{ano.ano}}{{/if}}?. Se eliminará este año y
+                todos sus movimientos de la base de datos.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <form action="/anos/delete" method="POST">
+                    <input type="hidden" name="anoId" value="{{ano.id}}">
+                    <button type="submit" class="btn btn-danger">Confirmar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="card col-md-7 mx-auto p-2">
     <div class="card-body">
         <h3 class="card-title text-center">Editar Año {{#if getAno}}{{getAno.ano}}{{else}}{{ano.ano}}{{/if}}
@@ -25,6 +51,10 @@
             <div class="form-group">
                 <label for="saldoinicial">Saldo Inicial</label>
                 <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">€</span>
+                        <span class="input-group-text">0.00</span>
+                    </div>
                     {{#if ano}}
                     <input type="text" class="form-control {{#if errors_msg}}{{#unless validation.saldoinicial}}is-invalid{{/unless}}{{/if}}"
                         name="saldoinicial" id="inputSaldo" value="{{ano.saldoinicial}}" placeholder="Saldo Inicial">
@@ -38,22 +68,16 @@
                     <div class="invalid-feedback order-1">
                         Formato de saldo incorrecto.
                     </div>{{/unless}}
-                    <div class="input-group-append">
-                        <span class="input-group-text">€</span>
-                        <span class="input-group-text">0.00</span>
-                    </div>
-
                 </div>
             </div>
             <input type="hidden" name="anoId" value="{{ano.id}}">
-            <button class="btn btn-primary btn-block" id="editarAnoBtn" type="submit">Editar</button>
+            <button class="btn btn-outline-primary btn-block" id="editarAnoBtn" type="submit">Editar</button>
 
         </form>
-        <form action="/anos/delete" method="post">
-            <div class="form-group mt-2">
-                <input type="hidden" name="anoId" value="{{ano.id}}">
-                <button class="btn btn-danger btn-block" id="borrarAnoBtn" type="submit">Eliminar {{#if getAno}}{{getAno.ano}}{{else}}{{ano.ano}}{{/if}}</button>
-            </div>
-        </form>
+        <div class="form-group mt-2">
+            <button type="button" class="btn btn-outline-danger btn-block" id="eliminar-movimiento" data-toggle="modal"
+                data-target="#eliminarModalConfirmacion">Eliminar {{#if
+                getAno}}{{getAno.ano}}{{else}}{{ano.ano}}{{/if}}</button>
+        </div>
     </div>
 </div>
