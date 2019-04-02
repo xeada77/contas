@@ -52,9 +52,6 @@
             addData(gastoChart, nuevasLabelsGasto, nuevosdatasetGasto);
             addData(ingresoChart, nuevasLabelsIngreso, nuevosdatasetIngreso);
 
-                    /*gastoChart.data.labels = nuevasLabelsGasto;
-                    gastoChart.data.datasets[0].data = nuevosdatasetGasto;
-                    gastoChart.update();*/
         });
 
         var ctxIngreso = graficoIngresosCanvas.getContext("2d");

@@ -77,8 +77,6 @@ exports.getDatosMovimientos = async (req, res, next) => {
     }
 };
 
-
-
 exports.getMovimientos = async (req, res, next) => {
 
     //console.log(res.locals.datos.movimientos);
@@ -108,8 +106,6 @@ exports.getMovimientos = async (req, res, next) => {
         return res.redirect("/anos");
     }
 };
-
-
 
 exports.getEditMovimiento = async (req, res, next) => {
     const movimientoId = Types.ObjectId(req.params.movimientoId);
