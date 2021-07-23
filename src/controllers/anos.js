@@ -5,8 +5,9 @@ const remanenteId = '5c49be3c2205160e04089265';
 
 // Devuelve la pagina con todos los años almacenados
 exports.getAnos = async (req, res, next) => {
+    const listaAnos = await helpers.listaAnos();
     res.render("anos", {
-        listaAnos: await helpers.listaAnos(),
+        listaAnos,
         errors: res.locals.errors_msg,
         path: '/anos'
     });

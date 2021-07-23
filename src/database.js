@@ -10,7 +10,8 @@ mongoose
         {
             useCreateIndex: true,
             useNewUrlParser: true,
-            useFindAndModify: false
+            useFindAndModify: false,
+            useUnifiedTopology: true
         }
     )
     .then(() => {

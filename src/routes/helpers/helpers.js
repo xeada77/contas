@@ -5,12 +5,12 @@ const Categoria = require('../../models/Categoria');
 const helpers = {};
 
 helpers.listaAnos = async () => {
-    const anos = await Ano.find().sort({ ano: 1 });
+    const anos = await Ano.find().sort({ ano: 1 }).lean();
     return anos;
 };
 
 helpers.listaCategorias = async () => {
-    const categorias = await Categoria.find();
+    const categorias = await Categoria.find().lean();
     return categorias;
 }
 

@@ -5,7 +5,7 @@ const Categoria = require("../models/Categoria");
 const helpers = require("./helpers/helpers");
 
 router.get("/categorias", async (req, res) => {
-    const categorias = await Categoria.find();
+    const categorias = await Categoria.find().lean();
     res.render("categorias", {
         listaAnos: await helpers.listaAnos(),
         categorias,
